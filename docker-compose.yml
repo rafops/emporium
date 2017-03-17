@@ -12,6 +12,10 @@ services:
       - redis
   db:
     image: postgres
-
+    volumes:
+      - db_data:/var/lib/postgresql/data
   redis:
     image: redis
+volumes:
+  db_data:
+    driver: local
