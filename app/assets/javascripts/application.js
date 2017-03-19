@@ -13,4 +13,5 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require s3.jquery.fine-uploader/s3.jquery.fine-uploader
 //= require_tree .

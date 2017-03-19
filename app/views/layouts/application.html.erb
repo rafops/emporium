@@ -6,9 +6,30 @@
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+    <script type="text/template" id="qq-template">
+      <%= render partial: 'fine_uploader_template' %>
+    </script>
   </head>
 
-  <body>
+  <body data-controller="<%= controller.controller_name %>" data-action="<%= controller.action_name %>">
     <%= yield %>
   </body>
+
+  <script>
+    jQuery(document).ready(function() {
+      var controller_name;
+      var action_name;
+      var scope;
+      var $body = $('body')
+
+      controller_name = $body.data('controller');
+      action_name = $body.data('action');
+      scope = window.Emporium || (window.Emporium = {});
+
+      scope = scope[controller_name] || {};
+      scope.initialize && scope.initialize();
+      scope[action_name] && scope[action_name]();
+    });
+  </script>
 </html>

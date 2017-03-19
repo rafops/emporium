@@ -1,0 +1,46 @@
+(($) ->
+  app = undefined
+  app = window.Emporium or (window.Emporium = {})
+  app.uploads =
+    initialize: ->
+      console.log('initialized')
+
+    # https://blog.fineuploader.com/2013/08/16/fine-uploader-s3-upload-directly-to-amazon-s3-from-your-browser/#client-side-integration
+    initializeFineUploader: ->
+      $('#fineUploader').fineUploaderS3
+        debug: true
+        request:
+          endpoint: "https://<%= ENV['AWS_BUCKET'] %>.s3.amazonaws.com"
+          accessKey: "<%= ENV['AWS_ACCESS_KEY_ID'] %>"
+        signature:
+          endpoint: '/uploads/sign'
+          version: 4
+        uploadSuccess:
+          endpoint: '/uploads/complete'
+        deleteFile:
+          enabled: true
+          endpoint: '/uploads'
+        retry:
+          enabledAuto: true
+        resume:
+          enabled: true
+        chunking:
+          enabled: true
+          partSize: 5242880
+        paste:
+          targetElement: $(document)
+          promptForName: true
+        validation:
+          allowedExtensions: ["jpeg", "jpg"]
+          acceptFiles: "image/jpeg"
+          sizeLimit: 50000000, # 50mb
+          itemLimit: 200
+
+    initializeForm: ->
+      @initializeFineUploader()
+
+    index: ->
+      @initializeForm()
+
+  app.uploads
+) jQuery

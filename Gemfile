@@ -51,3 +51,9 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+# Manage Procfile-based applications
+gem 'foreman', '~> 0.82.0'
+
+# The official AWS SDK for Ruby
+gem 'aws-sdk', '~> 2.8'
