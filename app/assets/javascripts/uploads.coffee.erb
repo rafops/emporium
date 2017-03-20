@@ -3,7 +3,7 @@
   app = window.Emporium or (window.Emporium = {})
   app.uploads =
     initialize: ->
-      console.log('initialized')
+      console.log('initialized') if <%= Rails.env.development? %>
 
     # https://blog.fineuploader.com/2013/08/16/fine-uploader-s3-upload-directly-to-amazon-s3-from-your-browser/#client-side-integration
     initializeFineUploader: ->
