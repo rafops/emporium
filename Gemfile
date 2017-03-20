@@ -57,3 +57,6 @@ gem 'foreman', '~> 0.82.0'
 
 # The official AWS SDK for Ruby
 gem 'aws-sdk', '~> 2.8'
+
+# Official Sass port of Bootstrap 3
+gem 'bootstrap-sass', '~> 3.3.7'
