@@ -22,7 +22,7 @@
           endpoint: '/uploads/sign'
           version: 4
         uploadSuccess:
-          endpoint: '/uploads/complete'
+          endpoint: '/uploads'
         deleteFile:
           enabled: true
           endpoint: '/uploads'
@@ -46,7 +46,7 @@
       @$uploader = $('#fineUploader')
       @initializeFineUploader()
 
-    index: ->
+    new: ->
       @initializeForm()
 
   app.uploads

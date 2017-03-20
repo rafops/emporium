@@ -2,7 +2,7 @@
 class UploadsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
-  def index
+  def new
   end
 
   # http://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-UsingHTTPPOST.html
@@ -24,7 +24,7 @@ class UploadsController < ApplicationController
     render json: response_data
   end
 
-  def complete
+  def create
     upload = Upload.new(
       object_key: params['key'],
       uuid: params['uuid'],
