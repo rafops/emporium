@@ -25,22 +25,32 @@ class UploadsController < ApplicationController
   end
 
   def complete
-    object_key = params['key']
-    uuid = params['uuid']
-    name = params['name'] # original filename
-    bucket = params['bucket'] # available as ENV['AWS_BUCKET']
-    url = "https://#{bucket}.s3.amazonaws.com/#{object_key}"
-    render json: { 'tempLink' => url, 'thumbnailUrl' => url }
+    upload = Upload.new(
+      object_key: params['key'],
+      uuid: params['uuid'],
+      name: params['name'] # original filename
+    )
+    if upload.save
+      render json: { 'tempLink' => upload.url }
+    else
+      render json: { 'error' => upload.errors.messages.first.flatten.join(' '), 'preventRetry' => true }, status: :unprocessable_entity
+    end
   end
 
   def destroy
-    render json: {}, state: 200
+    upload = Upload.find_by_uuid(params['uuid'])
+    if upload.destroy
+      render json: {}, state: :ok
+    else
+      render json: {}, state: :unprocessable_entity
+    end
   end
 
   private
 
   # VERSION 4
   # Extracted from lib/aws-sdk-core/signers/v4.rb
+  # http://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-query-string-auth.html
 
   def hexdigest(value)
     Aws::Checksums.sha256_hexdigest(value)

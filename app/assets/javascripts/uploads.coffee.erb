@@ -8,7 +8,7 @@
     # https://blog.fineuploader.com/2013/08/16/fine-uploader-s3-upload-directly-to-amazon-s3-from-your-browser/#client-side-integration
     initializeFineUploader: ->
       $('#fineUploader').fineUploaderS3
-        debug: true
+        debug: <%= Rails.env.development? %>
         request:
           endpoint: "https://<%= ENV['AWS_BUCKET'] %>.s3.amazonaws.com"
           accessKey: "<%= ENV['AWS_ACCESS_KEY_ID'] %>"
