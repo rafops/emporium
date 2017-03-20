@@ -16,10 +16,8 @@ class Upload < ApplicationRecord
   end
 
   def delete_from_s3
-    # TODO
-    # # Aws::S3::Errors::AccessDenied (Access Denied):
-    # bucket_object = Aws::S3::Bucket.new(bucket)
-    # s3_object = bucket_object.object(object_key)
-    # s3_object.delete()
+    bucket_object = Aws::S3::Bucket.new(bucket)
+    s3_object = bucket_object.object(object_key)
+    s3_object.delete()
   end
 end
