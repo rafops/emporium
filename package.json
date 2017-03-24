@@ -1,24 +1,6 @@
 {
   "name": "emporium",
-  "version": "1.0.0",
-  "description": "emporium",
-  "main": "index.js",
-  "directories": {
-    "test": "test"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/lememora/emporium.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/lememora/emporium/issues"
-  },
-  "homepage": "https://github.com/lememora/emporium#readme",
+  "private": true,
   "dependencies": {
     "fine-uploader": "^5.14.1"
   }
