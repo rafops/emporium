@@ -10,8 +10,8 @@
       @$uploader.fineUploaderS3
         debug: <%= Rails.env.development? %>
         request:
-          endpoint: "https://<%= ENV['AWS_BUCKET'] %>.s3.amazonaws.com"
-          accessKey: "<%= ENV['AWS_ACCESS_KEY_ID'] %>"
+          endpoint: "https://<%= ENV.fetch('AWS_BUCKET') %>.s3.amazonaws.com"
+          accessKey: "<%= ENV.fetch('AWS_ACCESS_KEY_ID') %>"
         objectProperties:
           key: (fileId) =>
             filename = @$uploader.fineUploader('getName', fileId)

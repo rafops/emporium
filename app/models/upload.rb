@@ -12,7 +12,7 @@ class Upload < ApplicationRecord
   private
 
   def bucket
-    ENV['AWS_BUCKET']
+    ENV.fetch('AWS_BUCKET')
   end
 
   def delete_from_s3

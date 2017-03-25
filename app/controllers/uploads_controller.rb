@@ -76,7 +76,7 @@ class UploadsController < ApplicationController
 
   def signature(payload, json_request)
     date, region = date_and_region(json_request)
-    k_date = hmac("AWS4#{ENV['AWS_SECRET_ACCESS_KEY']}", date)
+    k_date = hmac("AWS4#{ENV.fetch('AWS_SECRET_ACCESS_KEY')}", date)
     k_region = hmac(k_date, region)
     k_service = hmac(k_region, 's3')
     k_credentials = hmac(k_service, 'aws4_request')
