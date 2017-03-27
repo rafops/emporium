@@ -9,8 +9,8 @@ class CreateUpload
     upload = Upload.create(attributes)
 
     if upload.valid?
-      # TODO move upload.url out of the model
-      publish :success, upload, upload.url
+      url = CloudStorage::Object.new(upload.object_key).presigned_url
+      publish :success, upload, url
     else
       error_messages = upload.errors.messages.first.flatten.join(' ')
       publish :validation_error, upload, error_messages

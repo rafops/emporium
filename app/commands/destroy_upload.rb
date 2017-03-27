@@ -9,6 +9,7 @@ class DestroyUpload
     upload = Upload.find_by_uuid(uuid)
 
     if upload.destroy
+      CloudStorage::Object.new(upload.object_key).delete
       publish :success
     else
       publish :failure
