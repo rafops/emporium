@@ -43,6 +43,7 @@ group :development, :test do
 
   gem 'rspec-rails', '~> 3.5.0'
   gem 'factory_girl_rails', '~> 4.8.0'
+  gem 'wisper-rspec', '~> 0.0.3', require: false
 end
 
 group :development do
