@@ -5,11 +5,27 @@
     initialize: ->
       console.log('initialized') if <%= Rails.env.development? %>
 
+    totalProgressUpdate: (percentage) ->
+      progress = parseInt(percentage)
+      @$totalProgress ||= $('#uploader-total-progress')
+      @$totalProgressBar ||= @$totalProgress.find('.progress-bar')
+      @$totalProgressBarSpan ||= @$totalProgress.find('span.sr-only')
+
+      unless @$totalProgress.is(':visible')
+        @$totalProgress.removeClass('hidden')
+      if progress > 99
+        @$totalProgress.addClass('hidden')
+
+      @$totalProgressBar.attr('aria-valuenow', progress)
+      @$totalProgressBar.attr('style', "width: #{progress}%")
+      @$totalProgressBarSpan.text("#{progress}% Complete")
+
     # https://blog.fineuploader.com/2013/08/16/fine-uploader-s3-upload-directly-to-amazon-s3-from-your-browser/#client-side-integration
-    initializeFineUploader: (element) ->
-      uploader = new (qq.s3.FineUploader)(
+    initializeUploader: (element) ->
+      uploader = new qq.s3.FineUploaderBasic
         debug: <%= Rails.env.development? %>
-        element: element
+        button: document.getElementById('uploader-select-files')
+        # element: element
         request:
           endpoint: "https://<%= ENV.fetch('AWS_BUCKET') %>.s3.amazonaws.com"
           accessKey: "<%= ENV.fetch('AWS_ACCESS_KEY_ID') %>"
@@ -34,18 +50,26 @@
         chunking:
           enabled: true
           partSize: 5242880
-        paste:
-          targetElement: element
-          promptForName: true
+          # concurrent:
+          #   enabled: true # enable this later to compare performance
+        # paste:
+        #   targetElement: element
+        #   promptForName: true
         validation:
           allowedExtensions: ["jpeg", "jpg"]
           acceptFiles: "image/jpeg"
           sizeLimit: 50000000, # 50mb
           itemLimit: 200
-      )
+        callbacks:
+          # individual files
+          # onProgress: (id, name, uploadedBytes, totalBytes) ->
+          #   console.log("uploaded #{uploadedBytes} of #{totalBytes}")
+          onTotalProgress: (totalUploadedBytes, totalBytes) =>
+            @totalProgressUpdate(totalUploadedBytes/totalBytes*100)
+
 
     initializeForm: ->
-      @initializeFineUploader(document.getElementById('uploader'))
+      @initializeUploader(document.getElementById('uploader'))
 
     new: ->
       @initializeForm()
