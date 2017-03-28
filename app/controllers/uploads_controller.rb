@@ -61,7 +61,7 @@ class UploadsController < ApplicationController
     def upload_params
       original = params.permit(:key, :uuid, :name)
       object_key = original.delete(:key)
-      original.merge({ object_key: object_key })
+      original.merge({ object_key: object_key }).symbolize_keys
     end
 
     def create_upload
@@ -69,10 +69,10 @@ class UploadsController < ApplicationController
     end
 
     def destroy_upload_params
-      params.permit(:uuid)
+      params.permit(:uuid).symbolize_keys
     end
 
     def destroy_upload
-      @destroy_upload ||= DestroyUpload.new(destroy_upload_params[:uuid])
+      @destroy_upload ||= DestroyUpload.new(destroy_upload_params)
     end
 end

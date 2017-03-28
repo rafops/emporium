@@ -1,15 +1,16 @@
 class DestroyUpload
   include Wisper::Publisher
 
-  def initialize(uuid)
-    @uuid = uuid
+  def initialize(cloud_storage_object: CloudStorageObject, **upload_attributes)
+    @cloud_storage_object = cloud_storage_object
+    @upload_attributes = upload_attributes
   end
 
   def call
-    upload = Upload.find_by_uuid(uuid)
+    upload = Upload.find_by_uuid(upload_attributes[:uuid])
 
     if upload.destroy
-      CloudStorage::Object.new(upload.object_key).delete
+      cloud_storage_object.new(upload.object_key).delete
       publish :success
     else
       publish :failure
@@ -18,5 +19,5 @@ class DestroyUpload
 
   protected
 
-    attr_reader :uuid
+    attr_reader :upload_attributes, :cloud_storage_object
 end

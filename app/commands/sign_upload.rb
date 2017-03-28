@@ -1,3 +1,4 @@
+# TODO move AWS stuff to service
 # Reference
 # https://github.com/FineUploader/php-s3-server/blob/master/endpoint-cors.php
 class SignUpload

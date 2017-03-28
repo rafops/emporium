@@ -1,13 +1,13 @@
 class CreateUpload
   include Wisper::Publisher
 
-  def initialize(cloud_storage_object: CloudStorageObject, **attributes)
+  def initialize(cloud_storage_object: CloudStorageObject, **upload_attributes)
     @cloud_storage_object = cloud_storage_object
-    @attributes = attributes
+    @upload_attributes = upload_attributes
   end
 
   def call
-    upload = Upload.create(attributes)
+    upload = Upload.create(upload_attributes)
 
     if upload.valid?
       url = cloud_storage_object.new(upload.object_key).presigned_url
@@ -20,5 +20,5 @@ class CreateUpload
 
   protected
 
-    attr_reader :attributes, :cloud_storage_object
+    attr_reader :upload_attributes, :cloud_storage_object
 end
