@@ -6,16 +6,17 @@
       console.log('initialized') if <%= Rails.env.development? %>
 
     # https://blog.fineuploader.com/2013/08/16/fine-uploader-s3-upload-directly-to-amazon-s3-from-your-browser/#client-side-integration
-    initializeFineUploader: ->
-      @$uploader.fineUploaderS3
+    initializeFineUploader: (element) ->
+      uploader = new (qq.s3.FineUploader)(
         debug: <%= Rails.env.development? %>
+        element: element
         request:
           endpoint: "https://<%= ENV.fetch('AWS_BUCKET') %>.s3.amazonaws.com"
           accessKey: "<%= ENV.fetch('AWS_ACCESS_KEY_ID') %>"
         objectProperties:
           key: (fileId) =>
-            filename = @$uploader.fineUploader('getName', fileId)
-            uuid = @$uploader.fineUploader('getUuid', fileId)
+            filename = uploader.getName(fileId)
+            uuid = uploader.getUuid(fileId)
             ext = filename.substr(filename.lastIndexOf('.') + 1)
             "uploads/#{uuid}.#{ext}"
         signature:
@@ -34,17 +35,17 @@
           enabled: true
           partSize: 5242880
         paste:
-          targetElement: $(document)
+          targetElement: element
           promptForName: true
         validation:
           allowedExtensions: ["jpeg", "jpg"]
           acceptFiles: "image/jpeg"
           sizeLimit: 50000000, # 50mb
           itemLimit: 200
+      )
 
     initializeForm: ->
-      @$uploader = $('#fineUploader')
-      @initializeFineUploader()
+      @initializeFineUploader(document.getElementById('uploader'))
 
     new: ->
       @initializeForm()
