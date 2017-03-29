@@ -14,5 +14,5 @@
 //= require bootstrap-sprockets
 //= require jquery_ujs
 //= require turbolinks
-//= require s3.fine-uploader/s3.fine-uploader.core
+//= require fine-uploader/s3.fine-uploader.core
 //= require_tree .

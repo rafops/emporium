@@ -1,7 +1,0 @@
-{
-  "name": "emporium",
-  "private": true,
-  "dependencies": {
-    "fine-uploader": "^5.14.1"
-  }
-}
