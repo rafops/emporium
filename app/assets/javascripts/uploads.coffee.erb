@@ -19,6 +19,31 @@
       @$totalProgressBar.attr('style', "width: #{progress}%;")
       @$totalProgressBar.text("#{progress}%")
 
+    uploadAppend: (id, name) ->
+      @uploadItemCount ||= 0
+      @uploadItemTemplate ||= $('#upload-item-template').html()
+      @$uploadRowTemplate ||= $('#upload-row-template')
+      @uploadRowTemplate ||= @$uploadRowTemplate.html()
+      @uploadRowSpacingClass ||= @$uploadRowTemplate.data('spacing-class')
+      @uploadRowColumnCount ||= @$uploadRowTemplate.find('.col').length
+      @$uploadItems ||= $('#upload-items')
+      uploadItemCol = @uploadItemCount % @uploadRowColumnCount
+      uploadItemRow = parseInt(@uploadItemCount / @uploadRowColumnCount)
+
+      if uploadItemCol == 0
+        @$uploadItems.append(@uploadRowTemplate)
+
+      $row = @$uploadItems.find('.row').eq(uploadItemRow)
+      $col = $row.find('.col').eq(uploadItemCol)
+
+      if uploadItemRow > 0
+        $row.addClass(@uploadRowSpacingClass)
+
+      $col.append(@uploadItemTemplate)
+
+      @uploadItemCount++
+      return true
+
     # https://blog.fineuploader.com/2013/08/16/fine-uploader-s3-upload-directly-to-amazon-s3-from-your-browser/#client-side-integration
     initializeUploader: (element) ->
       uploader = new qq.s3.FineUploaderBasic
@@ -65,6 +90,8 @@
           #   console.log("uploaded #{uploadedBytes} of #{totalBytes}")
           onTotalProgress: (totalUploadedBytes, totalBytes) =>
             @totalProgressUpdate(totalUploadedBytes/totalBytes*100)
+          onUpload: (id, name) =>
+            @uploadAppend(id, name)
 
 
     initializeForm: ->
