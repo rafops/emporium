@@ -9,16 +9,15 @@
       progress = parseInt(percentage)
       @$totalProgress ||= $('#uploader-total-progress')
       @$totalProgressBar ||= @$totalProgress.find('.progress-bar')
-      @$totalProgressBarSpan ||= @$totalProgress.find('span.sr-only')
 
-      unless @$totalProgress.is(':visible')
-        @$totalProgress.removeClass('hidden')
+      if @$totalProgress.hasClass('invisible')
+        @$totalProgress.removeClass('invisible')
       if progress > 99
-        @$totalProgress.addClass('hidden')
+        @$totalProgress.addClass('invisible')
 
       @$totalProgressBar.attr('aria-valuenow', progress)
-      @$totalProgressBar.attr('style', "width: #{progress}%")
-      @$totalProgressBarSpan.text("#{progress}% Complete")
+      @$totalProgressBar.attr('style', "width: #{progress}%;")
+      @$totalProgressBar.text("#{progress}%")
 
     # https://blog.fineuploader.com/2013/08/16/fine-uploader-s3-upload-directly-to-amazon-s3-from-your-browser/#client-side-integration
     initializeUploader: (element) ->
