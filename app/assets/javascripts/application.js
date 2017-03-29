@@ -11,7 +11,8 @@
 // about supported directives.
 //
 //= require jquery
-//= require bootstrap-sprockets
+//= require tether
+//= require bootstrap
 //= require jquery_ujs
 //= require turbolinks
 //= require fine-uploader/s3.fine-uploader.core

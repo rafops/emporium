@@ -59,6 +59,7 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 source 'https://rails-assets.org' do
+  gem 'rails-assets-tether', '>= 1.4.0'
   gem 'rails-assets-fine-uploader', '~> 5.13.0'
 end
 
@@ -68,8 +69,8 @@ gem 'foreman', '~> 0.82.0'
 # The official AWS SDK for Ruby
 gem 'aws-sdk', '~> 2.8'
 
-# Official Sass port of Bootstrap 3
-gem 'bootstrap-sass', '~> 3.3.7'
+# Bootstrap 4
+gem 'bootstrap', '~> 4.0.0.alpha6'
 
 # A micro library providing Ruby objects with Publish-Subscribe capabilities
 gem 'wisper', '2.0.0'

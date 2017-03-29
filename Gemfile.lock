@@ -40,7 +40,7 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     arel (7.1.4)
-    autoprefixer-rails (6.7.7)
+    autoprefixer-rails (6.7.7.1)
       execjs
     aws-sdk (2.8.7)
       aws-sdk-resources (= 2.8.7)
@@ -50,9 +50,9 @@ GEM
     aws-sdk-resources (2.8.7)
       aws-sdk-core (= 2.8.7)
     aws-sigv4 (1.0.0)
-    bootstrap-sass (3.3.7)
-      autoprefixer-rails (>= 5.2.1)
-      sass (>= 3.3.4)
+    bootstrap (4.0.0.alpha6)
+      autoprefixer-rails (>= 6.0.3)
+      sass (>= 3.4.19)
     builder (3.2.3)
     byebug (9.0.6)
     coffee-rails (4.2.1)
@@ -121,6 +121,7 @@ GEM
       railties (= 5.0.2)
       sprockets-rails (>= 2.0.0)
     rails-assets-fine-uploader (5.13.0)
+    rails-assets-tether (1.4.0)
     rails-dom-testing (2.0.2)
       activesupport (>= 4.2.0, < 6.0)
       nokogiri (~> 1.6)
@@ -198,7 +199,7 @@ PLATFORMS
 
 DEPENDENCIES
   aws-sdk (~> 2.8)
-  bootstrap-sass (~> 3.3.7)
+  bootstrap (~> 4.0.0.alpha6)
   byebug
   coffee-rails (~> 4.2)
   factory_girl_rails (~> 4.8.0)
@@ -210,6 +211,7 @@ DEPENDENCIES
   puma (~> 3.0)
   rails (~> 5.0.2)
   rails-assets-fine-uploader (~> 5.13.0)!
+  rails-assets-tether (>= 1.4.0)!
   rspec-rails (~> 3.5.0)
   sass-rails (~> 5.0)
   spring
