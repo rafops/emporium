@@ -55,6 +55,10 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
+source 'https://rails-assets.org' do
+  gem 'rails-assets-tether', '>= 1.4.0'
+end
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
@@ -64,8 +68,8 @@ gem 'foreman', '~> 0.82.0'
 # The official AWS SDK for Ruby
 gem 'aws-sdk', '~> 2.8'
 
-# Official Sass port of Bootstrap 3
-gem 'bootstrap-sass', '~> 3.3.7'
+# Bootstrap 4
+gem 'bootstrap', '~> 4.0.0.alpha6'
 
 # A micro library providing Ruby objects with Publish-Subscribe capabilities
 gem 'wisper', '2.0.0'
