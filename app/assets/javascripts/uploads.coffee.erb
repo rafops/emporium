@@ -8,7 +8,7 @@
     totalProgressUpdate: (percentage) ->
       progress = parseInt(percentage)
       @$totalProgress ||= $('#uploader-total-progress')
-      @$totalProgressBar ||= @$totalProgress.find('.progress-bar')
+      @$totalProgressBar ||= @$totalProgress.find('[data-progress-bar]')
 
       if @$totalProgress.hasClass('invisible')
         @$totalProgress.removeClass('invisible')
@@ -33,13 +33,13 @@
         )
       )
 
-    uploadAppend: (id, name) ->
+    uploadStart: (id, name) ->
       @uploadItemCount ||= 0
       @uploadItemTemplate ||= $('#upload-item-template').html()
       @$uploadRowTemplate ||= $('#upload-row-template')
       @uploadRowTemplate ||= @$uploadRowTemplate.html()
       @uploadRowSpacingClass ||= @$uploadRowTemplate.data('spacing-class')
-      @uploadRowColumnCount ||= @$uploadRowTemplate.find('.col').length
+      @uploadRowColumnCount ||= @$uploadRowTemplate.find('[data-column]').length
       @$uploadItems ||= $('#upload-items')
       uploadItemCol = @uploadItemCount % @uploadRowColumnCount
       uploadItemRow = parseInt(@uploadItemCount / @uploadRowColumnCount)
@@ -47,19 +47,52 @@
       if uploadItemCol == 0
         @$uploadItems.append(@uploadRowTemplate)
 
-      $row = @$uploadItems.find('.row').eq(uploadItemRow)
-      $col = $row.find('.col').eq(uploadItemCol)
+      $row = @$uploadItems.find('[data-row]').eq(uploadItemRow)
+      $col = $row.find('[data-column]').eq(uploadItemCol)
 
       if uploadItemRow > 0
         $row.addClass(@uploadRowSpacingClass)
 
       $col.append(@uploadItemTemplate)
-      $card = $col.find('.card')
 
+      # update card
+      $card = $col.find('[data-card]')
+      $card.attr('id', "upload-item-#{id}")
+      $card.find('[data-title]').text(name)
       $card.removeClass('invisible')
       @drawThumbnail(id, $card.find('img').get(0))
 
       @uploadItemCount++
+      return true
+
+    uploadComplete: (id) ->
+      $card = $("#upload-item-#{id}")
+      $card.find('[data-loading]').addClass('invisible')
+      $destroyButton = $card.find('[data-destroy]')
+      $destroyButton.removeAttr('disabled')
+      $destroyButton.data('upload-item-id', id)
+      $destroyButton.on('click', (e) =>
+        @uploader.deleteFile($(e.currentTarget).data('upload-item-id'))
+        return false
+      )
+      return true
+
+    uploadError: (id) ->
+      $card = $("#upload-item-#{id}")
+      $card.find('[data-loading]').remove()
+      $card.find('[data-error]').removeClass('invisible')
+      return true
+
+    uploadDeleteStart: (id) ->
+      $card = $("#upload-item-#{id}")
+      $card.find('[data-loading]').removeClass('invisible')
+      $card.find('[data-destroy]').addClass('invisible')
+      return true
+
+    uploadDeleteComplete: (id) ->
+      $card = $("#upload-item-#{id}")
+      $card.find('[data-loading]').addClass('invisible')
+      $card.css('opacity', '0.5')
       return true
 
     # https://blog.fineuploader.com/2013/08/16/fine-uploader-s3-upload-directly-to-amazon-s3-from-your-browser/#client-side-integration
@@ -92,8 +125,8 @@
         chunking:
           enabled: true
           partSize: 5242880
-          # concurrent:
-          #   enabled: true # enable this later to compare performance
+          concurrent:
+            enabled: true
         # paste:
         #   targetElement: element
         #   promptForName: true
@@ -109,7 +142,15 @@
           onTotalProgress: (totalUploadedBytes, totalBytes) =>
             @totalProgressUpdate(totalUploadedBytes/totalBytes*100)
           onUpload: (id, name) =>
-            @uploadAppend(id, name)
+            @uploadStart(id, name)
+          onComplete: (id, name, responseJSON, xhr) =>
+            if responseJSON['success'] then @uploadComplete(id) else @uploadError(id)
+          onError: (id, name, errorReason, xhr) =>
+            @uploadError(id)
+          onDelete: (id) =>
+            @uploadDeleteStart(id)
+          onDeleteComplete: (id, xhr, isError) =>
+            @uploadDeleteComplete(id)
 
 
     initializeForm: ->

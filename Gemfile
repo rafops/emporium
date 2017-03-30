@@ -64,14 +64,17 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-pica', '~> 2.0.8'
 end
 
+# Bootstrap 4
+gem 'bootstrap', '~> 4.0.0.alpha6'
+
+# Font Awesome
+gem 'font-awesome-sass', '~> 4.7.0'
+
 # Manage Procfile-based applications
 gem 'foreman', '~> 0.82.0'
 
 # The official AWS SDK for Ruby
 gem 'aws-sdk', '~> 2.8'
-
-# Bootstrap 4
-gem 'bootstrap', '~> 4.0.0.alpha6'
 
 # A micro library providing Ruby objects with Publish-Subscribe capabilities
 gem 'wisper', '2.0.0'
