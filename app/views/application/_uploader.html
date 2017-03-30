@@ -1,4 +1,4 @@
-<div class="jumbotron mt-5" id="uploader">
+<div class="jumbotron mt-5 mb-3" id="uploader">
   <h1>Uploads</h1>
   <p class="lead">Drop files here or click the button bellow to select files.</p>
   <button class="btn btn-lg btn-primary" id="uploader-select-files">Select files…</button>
@@ -8,27 +8,21 @@
 </div>
 
 <div id="upload-item-template" style="display:none;">
-  <div class="card invisible" data-card>
-    <img class="card-img-top img-fluid">
-    <div class="card-img-overlay">
-      <button class="btn btn-danger btn-lg text-white" disabled data-destroy><i class="fa fa-trash-o fa-lg"></i> Delete</a>
+  <div class="col-12 col-md-4 mb-3 invisible" data-upload-item>
+    <div class="card">
+      <img class="card-img-top img-fluid" data-thumbnail>
+      <div class="card-img-overlay">
+        <button class="btn btn-danger btn-lg text-white" disabled data-destroy><i class="fa fa-trash-o fa-lg"></i> Delete</a>
+      </div>
+      <div class="card-img-overlay text-right" data-loading>
+        <i class="fa fa-spinner fa-pulse fa-3x fa-fw fa-inverse"></i>
+      </div>
+      <div class="card-img-overlay text-right invisible" data-error>
+        <i class="fa fa-exclamation-triangle fa-3x fa-fw text-warning"></i>
+      </div>
+      <div class="card-block">
+        <h4 class="card-title mb-0" data-title></h4>
+      </div>
     </div>
-    <div class="card-img-overlay text-right" data-loading>
-      <i class="fa fa-spinner fa-pulse fa-3x fa-fw fa-inverse"></i>
-    </div>
-    <div class="card-img-overlay text-right invisible" data-error>
-      <i class="fa fa-exclamation-triangle fa-3x fa-fw text-warning"></i>
-    </div>
-    <div class="card-block">
-      <h4 class="card-title mb-0" data-title></h4>
-    </div>
-  </div>
-</div>
-
-<div id="upload-row-template" style="display:none;" data-spacing-class="pt-3">
-  <div class="row" data-row>
-    <div class="col-12 col-md-4" data-column></div>
-    <div class="col-12 col-md-4" data-column></div>
-    <div class="col-12 col-md-4" data-column></div>
   </div>
 </div>

@@ -34,41 +34,23 @@
       )
 
     uploadStart: (id, name) ->
-      @uploadItemCount ||= 0
       @uploadItemTemplate ||= $('#upload-item-template').html()
-      @$uploadRowTemplate ||= $('#upload-row-template')
-      @uploadRowTemplate ||= @$uploadRowTemplate.html()
-      @uploadRowSpacingClass ||= @$uploadRowTemplate.data('spacing-class')
-      @uploadRowColumnCount ||= @$uploadRowTemplate.find('[data-column]').length
       @$uploadItems ||= $('#upload-items')
-      uploadItemCol = @uploadItemCount % @uploadRowColumnCount
-      uploadItemRow = parseInt(@uploadItemCount / @uploadRowColumnCount)
 
-      if uploadItemCol == 0
-        @$uploadItems.append(@uploadRowTemplate)
+      @$uploadItems.append(@uploadItemTemplate)
 
-      $row = @$uploadItems.find('[data-row]').eq(uploadItemRow)
-      $col = $row.find('[data-column]').eq(uploadItemCol)
+      $item = @$uploadItems.find('[data-upload-item]').eq(id)
+      $item.attr('id', "upload-item-#{id}")
+      $item.find('[data-title]').text(name)
+      @drawThumbnail(id, $item.find('[data-thumbnail]').get(0))
+      $item.removeClass('invisible')
 
-      if uploadItemRow > 0
-        $row.addClass(@uploadRowSpacingClass)
-
-      $col.append(@uploadItemTemplate)
-
-      # update card
-      $card = $col.find('[data-card]')
-      $card.attr('id', "upload-item-#{id}")
-      $card.find('[data-title]').text(name)
-      $card.removeClass('invisible')
-      @drawThumbnail(id, $card.find('img').get(0))
-
-      @uploadItemCount++
       return true
 
     uploadComplete: (id) ->
-      $card = $("#upload-item-#{id}")
-      $card.find('[data-loading]').addClass('invisible')
-      $destroyButton = $card.find('[data-destroy]')
+      $item = $("#upload-item-#{id}")
+      $item.find('[data-loading]').addClass('invisible')
+      $destroyButton = $item.find('[data-destroy]')
       $destroyButton.removeAttr('disabled')
       $destroyButton.data('upload-item-id', id)
       $destroyButton.on('click', (e) =>
@@ -78,21 +60,21 @@
       return true
 
     uploadError: (id) ->
-      $card = $("#upload-item-#{id}")
-      $card.find('[data-loading]').remove()
-      $card.find('[data-error]').removeClass('invisible')
+      $item = $("#upload-item-#{id}")
+      $item.find('[data-loading]').remove()
+      $item.find('[data-error]').removeClass('invisible')
       return true
 
     uploadDeleteStart: (id) ->
-      $card = $("#upload-item-#{id}")
-      $card.find('[data-loading]').removeClass('invisible')
-      $card.find('[data-destroy]').addClass('invisible')
+      $item = $("#upload-item-#{id}")
+      $item.find('[data-loading]').removeClass('invisible')
+      $item.find('[data-destroy]').addClass('invisible')
       return true
 
     uploadDeleteComplete: (id) ->
-      $card = $("#upload-item-#{id}")
-      $card.find('[data-loading]').addClass('invisible')
-      $card.css('opacity', '0.5')
+      $item = $("#upload-item-#{id}")
+      $item.find('[data-loading]').addClass('invisible')
+      $item.css('opacity', '0.5')
       return true
 
     # https://blog.fineuploader.com/2013/08/16/fine-uploader-s3-upload-directly-to-amazon-s3-from-your-browser/#client-side-integration
