@@ -37,6 +37,12 @@ class UploadsController < ApplicationController
   end
 
   def destroy
+    destroy_upload.on :not_found do
+      respond_to do |format|
+        format.json { render json: {}, state: :not_found }
+      end
+    end
+
     destroy_upload.on :success do
       respond_to do |format|
         format.json { render json: {}, state: :ok }

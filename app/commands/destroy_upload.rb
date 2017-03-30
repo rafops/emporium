@@ -8,6 +8,7 @@ class DestroyUpload
 
   def call
     upload = Upload.find_by_uuid(upload_attributes[:uuid])
+    return publish :not_found unless upload
 
     if upload.destroy
       cloud_storage_object.new(upload.object_key).delete

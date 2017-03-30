@@ -1,3 +1,30 @@
 // Place all the styles related to the uploads controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.upload-item-thumbnail {
+  border-radius: 0.20rem;
+}
+
+.upload-item-title-wrap {
+  word-wrap: break-word;
+  color: $white;
+  text-shadow: 1px 1px 2px $black;
+  opacity: 0.8;
+  overflow-y: hidden;
+}
+
+.upload-item-title-wrap .card-title {
+  width: 90%;
+  position: absolute;
+  bottom: 0;
+}
+
+.upload-item-progress {
+  width: 50%;
+  opacity: 0.9;
+}
+
+.upload-item-progress .progress-bar {
+  height: 5px;
+}

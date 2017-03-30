@@ -1,27 +1,77 @@
 (($) ->
+  $.fn.markAsVisible = ->
+    @removeClass('invisible')
+  $.fn.markAsInvisible = ->
+    @addClass('invisible')
+  $.fn.addDanger = ->
+    @addClass('bg-danger')
+  $.fn.removeDanger = ->
+    @removeClass('bg-danger')
+
+  $.fn.getUploadId = ->
+    parseInt(@data('upload-id'))
+  $.fn.getThumbnail = ->
+    @find('[v-thumbnail]')
+  $.fn.getRemoveButton = ->
+    @find('[v-remove-button]')
+  $.fn.getProgressBar = ->
+    @find('[v-progress-bar]')
+
+  $.fn.setTitle = (title) ->
+    @find('[v-title]').text(title)
+
+  $.fn.markAsComplete = ->
+    @find('[v-status-bar]').remove()
+
+  $.fn.updateProgress = (percentage) ->
+    progress = parseInt(percentage)
+    progress = 0 if isNaN(progress) || progress < 0
+    $progressBar = @getProgressBar()
+    $progressBar.attr('aria-valuenow', progress)
+    $progressBar.attr('style', "width: #{progress}%;")
+
   app = undefined
   app = window.Emporium or (window.Emporium = {})
   app.uploads =
+
     initialize: ->
       console.log('initialized') if <%= Rails.env.development? %>
 
-    totalProgressUpdate: (percentage) ->
-      progress = parseInt(percentage)
-      @$totalProgress ||= $('#uploader-total-progress')
-      @$totalProgressBar ||= @$totalProgress.find('[data-progress-bar]')
+    # Upload Item
 
-      if @$totalProgress.hasClass('invisible')
-        @$totalProgress.removeClass('invisible')
-      if progress > 99
-        @$totalProgress.addClass('invisible')
+    findItem: (id) ->
+      @items ||= {}
+      $item = @items[id] || $("#upload_item_#{id}")
+      @items[id] ||= $item if $item.length > 0
+      return $item
 
-      @$totalProgressBar.attr('aria-valuenow', progress)
-      @$totalProgressBar.attr('style', "width: #{progress}%;")
-      @$totalProgressBar.text("#{progress}%")
+    createItem: (id, name) ->
+      @itemTemplate ||= $('#upload-item-template').html()
+      @$itemContainer ||= $('#upload-items')
+      @$itemContainer.append(@itemTemplate.replace(/{{id}}/g, id))
+      return @findItem(id)
 
-    drawThumbnail: (id, img) ->
-      # @uploader.drawThumbnail(id, img, 350, false)
-      @uploader.drawThumbnail(id, img, 350, false, (resizeInfo) ->
+    setupRemoveButton: ($item) ->
+      $item.getRemoveButton().on('click', ((e) ->
+        e.preventDefault()
+        id = @$item.getUploadId()
+        @uploader.cancel(id)
+        @uploader.deleteFile(id)
+        @$item.getRemoveButton().markAsInvisible()
+        return false
+      ).bind({ uploader: @uploader, $item: $item }))
+
+    setupThumbnail: ($item) ->
+      $thumbnail = $item.getThumbnail()
+      $thumbnail.load (->
+        # only display originals
+        # workaround to fix scaling.hideScaled = true
+        @$item.show() if @uploader.getParentId(@$item.getUploadId()) == null
+      ).bind({ uploader: @uploader, $item: $item })
+      uploadId = $item.getUploadId()
+      img = $thumbnail.get(0)
+
+      @uploader.drawThumbnail(uploadId, img, 350, false, (resizeInfo) ->
         new Promise((resolve, reject) ->
           options =
             unsharpAmount: 80
@@ -33,48 +83,38 @@
         )
       )
 
-    uploadStart: (id, name) ->
-      @uploadItemTemplate ||= $('#upload-item-template').html()
-      @$uploadItems ||= $('#upload-items')
-
-      @$uploadItems.append(@uploadItemTemplate)
-
-      $item = @$uploadItems.find('[data-upload-item]').eq(id)
-      $item.attr('id', "upload-item-#{id}")
-      $item.find('[data-title]').text(name)
-      @drawThumbnail(id, $item.find('[data-thumbnail]').get(0))
-      $item.removeClass('invisible')
-
+    uploadStart: (id, filename) ->
+      $item = @findItem(id)
+      # retry
+      if $item.length > 0
+        $item.getProgressBar().removeDanger()
+      # new upload
+      else
+        $item = @createItem(id)
+        $item.setTitle(filename)
+        @setupRemoveButton($item)
+        @setupThumbnail($item)
       return true
 
+    uploadProgress: (id, percentage) ->
+      $item = @findItem(id)
+      $item.updateProgress(percentage)
+
     uploadComplete: (id) ->
-      $item = $("#upload-item-#{id}")
-      $item.find('[data-loading]').addClass('invisible')
-      $destroyButton = $item.find('[data-destroy]')
-      $destroyButton.removeAttr('disabled')
-      $destroyButton.data('upload-item-id', id)
-      $destroyButton.on('click', (e) =>
-        @uploader.deleteFile($(e.currentTarget).data('upload-item-id'))
-        return false
-      )
+      $item = @findItem(id)
+      $item.markAsComplete()
+      # retry all on the queue if a upload was completed successfully
+      @retryAll()
       return true
 
     uploadError: (id) ->
-      $item = $("#upload-item-#{id}")
-      $item.find('[data-loading]').remove()
-      $item.find('[data-error]').removeClass('invisible')
-      return true
-
-    uploadDeleteStart: (id) ->
-      $item = $("#upload-item-#{id}")
-      $item.find('[data-loading]').removeClass('invisible')
-      $item.find('[data-destroy]').addClass('invisible')
+      $item = @findItem(id)
+      $item.getProgressBar().addDanger()
       return true
 
     uploadDeleteComplete: (id) ->
-      $item = $("#upload-item-#{id}")
-      $item.find('[data-loading]').addClass('invisible')
-      $item.css('opacity', '0.5')
+      $item = @findItem(id)
+      $item.hide()
       return true
 
     # https://blog.fineuploader.com/2013/08/16/fine-uploader-s3-upload-directly-to-amazon-s3-from-your-browser/#client-side-integration
@@ -107,8 +147,9 @@
         chunking:
           enabled: true
           partSize: 5242880
-          concurrent:
-            enabled: true
+          # Upload big chunks one at time. In case of failure, just one chunk will be lost
+          # concurrent:
+          #   enabled: true
         # paste:
         #   targetElement: element
         #   promptForName: true
@@ -116,27 +157,66 @@
           allowedExtensions: ["jpeg", "jpg"]
           acceptFiles: "image/jpeg"
           sizeLimit: 50000000, # 50mb
-          itemLimit: 200
+          itemLimit: 1000
+        # scaling:
+        #   sizes: [
+        #     { name: 'preview', maxSize: 640 }
+        #   ]
+        #   # # not working
+        #   # hideScaled: true
+        # # not being called BUG?
+        # thumbnails:
+        #   customResizer: (resizeInfo) ->
+        #     new Promise((resolve, reject) ->
+        #       options =
+        #         unsharpAmount: 80
+        #         unsharpRadius: 0.6
+        #         unsharpThreshold: 2
+        #       pica.WEBGL = true
+        #       pica.debug = console.log.bind(console) if <%= Rails.env.development? %>
+        #       pica.resizeCanvas resizeInfo.sourceCanvas, resizeInfo.targetCanvas, options, resolve
+        #     )
         callbacks:
-          # individual files
-          # onProgress: (id, name, uploadedBytes, totalBytes) ->
-          #   console.log("uploaded #{uploadedBytes} of #{totalBytes}")
-          onTotalProgress: (totalUploadedBytes, totalBytes) =>
-            @totalProgressUpdate(totalUploadedBytes/totalBytes*100)
+          onProgress: (id, name, uploadedBytes, totalBytes) =>
+            @uploadProgress(id, uploadedBytes/totalBytes*100)
           onUpload: (id, name) =>
             @uploadStart(id, name)
           onComplete: (id, name, responseJSON, xhr) =>
             if responseJSON['success'] then @uploadComplete(id) else @uploadError(id)
           onError: (id, name, errorReason, xhr) =>
             @uploadError(id)
-          onDelete: (id) =>
-            @uploadDeleteStart(id)
           onDeleteComplete: (id, xhr, isError) =>
             @uploadDeleteComplete(id)
+          onError: (id, name, errorReason, xhr) =>
+            @uploadError(id)
+          onStatusChange: (id, oldStatus, newStatus) =>
+            @addToRetryQueue(id) if newStatus == qq.status.UPLOAD_FAILED
 
+    addToRetryQueue: (uploadId) ->
+      @retryQueue.push(uploadId)
+
+    retryUpload: ->
+      uploadId = @retryQueue.shift()
+      @uploader.retry(uploadId) unless uploadId == undefined
+      setTimeout (=>
+        @monitorRetryQueue()
+      ), 5000
+
+    monitorRetryQueue: ->
+      setTimeout (=>
+        @retryUpload()
+      ), 5000
+
+    retryAll: ->
+      @uploader.retry(@retryQueue.shift()) while @retryQueue.length > 0
+
+    initializeRetryQueue: ->
+      @retryQueue = []
+      @monitorRetryQueue()
 
     initializeForm: ->
       @initializeUploader(document.getElementById('uploader'))
+      @initializeRetryQueue()
 
     new: ->
       @initializeForm()
