@@ -19,6 +19,20 @@
       @$totalProgressBar.attr('style', "width: #{progress}%;")
       @$totalProgressBar.text("#{progress}%")
 
+    drawThumbnail: (id, img) ->
+      # @uploader.drawThumbnail(id, img, 350, false)
+      @uploader.drawThumbnail(id, img, 350, false, (resizeInfo) ->
+        new Promise((resolve, reject) ->
+          options =
+            unsharpAmount: 80
+            unsharpRadius: 0.6
+            unsharpThreshold: 2
+          pica.WEBGL = true
+          pica.debug = console.log.bind(console) if <%= Rails.env.development? %>
+          pica.resizeCanvas resizeInfo.sourceCanvas, resizeInfo.targetCanvas, options, resolve
+        )
+      )
+
     uploadAppend: (id, name) ->
       @uploadItemCount ||= 0
       @uploadItemTemplate ||= $('#upload-item-template').html()
@@ -40,13 +54,17 @@
         $row.addClass(@uploadRowSpacingClass)
 
       $col.append(@uploadItemTemplate)
+      $card = $col.find('.card')
+
+      $card.removeClass('invisible')
+      @drawThumbnail(id, $card.find('img').get(0))
 
       @uploadItemCount++
       return true
 
     # https://blog.fineuploader.com/2013/08/16/fine-uploader-s3-upload-directly-to-amazon-s3-from-your-browser/#client-side-integration
     initializeUploader: (element) ->
-      uploader = new qq.s3.FineUploaderBasic
+      @uploader = new qq.s3.FineUploaderBasic
         debug: <%= Rails.env.development? %>
         button: document.getElementById('uploader-select-files')
         # element: element
@@ -55,8 +73,8 @@
           accessKey: "<%= ENV.fetch('AWS_ACCESS_KEY_ID') %>"
         objectProperties:
           key: (fileId) =>
-            filename = uploader.getName(fileId)
-            uuid = uploader.getUuid(fileId)
+            filename = @uploader.getName(fileId)
+            uuid = @uploader.getUuid(fileId)
             ext = filename.substr(filename.lastIndexOf('.') + 1)
             "uploads/#{uuid}.#{ext}"
         signature:

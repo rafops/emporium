@@ -16,4 +16,5 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require fine-uploader/s3.fine-uploader.core
+//= require pica/pica
 //= require_tree .
