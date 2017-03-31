@@ -1,15 +1,15 @@
-<div class="jumbotron mt-3 mb-3" id="uploader">
+<div class="jumbotron mt-3 mb-3">
   <h1>Uploads</h1>
   <p class="lead">Click the button bellow to select files.</p>
-  <button class="btn btn-lg btn-primary" id="uploader-select-files">Select files…</button>
+  <button class="btn btn-lg btn-primary" id="upload-button">Select files…</button>
 </div>
 
 <div id="upload-item-template" style="display:none;">
-  <div class="col-12 col-md-4 mb-3" style="display:none;" data-upload-id="{{id}}" id="upload_item_{{id}}">
-    <div class="card">
+  <div class="col-12 col-md-4 mb-3 upload-item" style="display:none;" data-upload-id="{{uploadId}}" id="upload_item_{{uploadId}}">
+    <div class="card upload-item-card">
       <img class="card-img-top img-fluid upload-item-thumbnail" v-thumbnail>
       <div class="card-img-overlay upload-item-title-wrap">
-        <h6 class="card-title mb-3" v-title></h4>
+        <h6 class="card-title mb-3" v-title></h6>
       </div>
       <div class="card-img-overlay" v-status-bar>
         <div class="progress upload-item-progress">

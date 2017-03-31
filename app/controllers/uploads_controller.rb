@@ -65,9 +65,15 @@ class UploadsController < ApplicationController
     end
 
     def upload_params
-      original = params.permit(:key, :uuid, :name)
+      original = params.permit(:key, :qquuid, :qqparentuuid, :name)
       object_key = original.delete(:key)
-      original.merge({ object_key: object_key })
+      uuid = original.delete(:qquuid)
+      parent_uuid = original.delete(:qqparentuuid)
+      original.merge(
+        object_key: object_key,
+        uuid: uuid,
+        parent_uuid: parent_uuid
+      )
     end
 
     def create_upload

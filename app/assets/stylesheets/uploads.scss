@@ -3,14 +3,24 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .upload-item-thumbnail {
-  border-radius: 0.20rem;
+  opacity: 0.5;
+}
+
+.upload-item-card {
+  border: 0;
+}
+
+.upload-item-complete .upload-item-thumbnail {
+  opacity: 1;
+}
+.upload-item-complete .upload-item-progress {
+  display: none;
 }
 
 .upload-item-title-wrap {
   word-wrap: break-word;
   color: $white;
   text-shadow: 1px 1px 2px $black;
-  opacity: 0.8;
   overflow-y: hidden;
 }
 
@@ -22,7 +32,6 @@
 
 .upload-item-progress {
   width: 50%;
-  opacity: 0.9;
 }
 
 .upload-item-progress .progress-bar {

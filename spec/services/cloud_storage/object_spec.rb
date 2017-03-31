@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe CloudStorageObject do
+RSpec.describe CloudStorage::Object do
 
   let(:upload) { build :upload }
   let(:object_key) { upload.object_key }

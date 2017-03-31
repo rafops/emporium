@@ -1,7 +1,7 @@
 class CreateUpload
   include Wisper::Publisher
 
-  def initialize(cloud_storage_object: CloudStorageObject, **upload_attributes)
+  def initialize(cloud_storage_object: CloudStorage::Object, **upload_attributes)
     @cloud_storage_object = cloud_storage_object
     @upload_attributes = upload_attributes
   end

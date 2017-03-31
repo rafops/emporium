@@ -10,17 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170320023530) do
+ActiveRecord::Schema.define(version: 20170402014837) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "uploads", force: :cascade do |t|
-    t.string   "object_key", null: false
-    t.uuid     "uuid",       null: false
+    t.string   "object_key",  null: false
+    t.uuid     "uuid",        null: false
     t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.uuid     "parent_uuid"
+    t.index ["parent_uuid"], name: "index_uploads_on_parent_uuid", using: :btree
     t.index ["uuid"], name: "index_uploads_on_uuid", unique: true, using: :btree
   end
 

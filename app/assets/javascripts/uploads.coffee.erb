@@ -1,8 +1,9 @@
 (($) ->
-  $.fn.markAsVisible = ->
-    @removeClass('invisible')
-  $.fn.markAsInvisible = ->
-    @addClass('invisible')
+
+  ###
+  Uploader jQuery Plugins
+  ###
+
   $.fn.addDanger = ->
     @addClass('bg-danger')
   $.fn.removeDanger = ->
@@ -17,112 +18,153 @@
   $.fn.getProgressBar = ->
     @find('[v-progress-bar]')
 
-  $.fn.setTitle = (title) ->
-    @find('[v-title]').text(title)
-
   $.fn.markAsComplete = ->
-    @find('[v-status-bar]').remove()
+    @addClass('upload-item-complete')
 
-  $.fn.updateProgress = (percentage) ->
+  $.fn.setProgress = (percentage) ->
     progress = parseInt(percentage)
     progress = 0 if isNaN(progress) || progress < 0
     $progressBar = @getProgressBar()
     $progressBar.attr('aria-valuenow', progress)
     $progressBar.attr('style', "width: #{progress}%;")
 
+  $.fn.setTitle = (title) ->
+    @find('[v-title]').text(title)
+    return @
+
+  $.fn.setupRemoveButton = (uploader) ->
+    @getRemoveButton().on 'click', ((e) =>
+      e.preventDefault()
+
+      removeUpload = (uploadId) ->
+        upload = uploader.getUploads({ id: uploadId })
+        if upload.status == qq.status.UPLOAD_SUCCESSFUL or
+           upload.status == qq.status.DELETE_FAILED
+          uploader.deleteFile(uploadId)
+        else if upload.status == qq.status.UPLOADING or
+                upload.status == qq.status.CANCELED
+          uploader.cancel(uploadId)
+
+      uploadId = @getUploadId()
+      removeUpload(uploadId)
+      thumbnails = uploader.getUploads().filter((item) ->
+        item.parentId == uploadId
+      )
+      removeUpload(thumbnail.id) for thumbnail in thumbnails
+
+      return false
+    )
+    return @
+
+  $.fn.setupThumbnail = (uploader) ->
+    $thumbnail = @getThumbnail()
+    $thumbnail.load (=>
+      # only display originals
+      # workaround to fix scaling.hideScaled = true
+      @show() if uploader.getParentId(@getUploadId()) == null
+    )
+    uploadId = @getUploadId()
+    img = $thumbnail.get(0)
+
+    uploader.drawThumbnail(uploadId, img, 350, false, (resizeInfo) ->
+      new Promise((resolve, reject) ->
+        options =
+          unsharpAmount: 80
+          unsharpRadius: 0.6
+          unsharpThreshold: 2
+        pica.WEBGL = true
+        pica.debug = console.log.bind(console) if <%= Rails.env.development? %>
+        pica.resizeCanvas resizeInfo.sourceCanvas, resizeInfo.targetCanvas, options, resolve
+      )
+    )
+    return @
+
+
+  ###
+  Application
+  ###
+
   app = undefined
   app = window.Emporium or (window.Emporium = {})
   app.uploads =
 
-    initialize: ->
-      console.log('initialized') if <%= Rails.env.development? %>
+    ###
+    Uploader
+    ###
 
-    # Upload Item
-
-    findItem: (id) ->
+    findItem: (uploadId) ->
       @items ||= {}
-      $item = @items[id] || $("#upload_item_#{id}")
-      @items[id] ||= $item if $item.length > 0
+      $item = @items[uploadId] || $("#upload_item_#{uploadId}")
+      @items[uploadId] ||= $item if $item.length > 0
       return $item
 
-    createItem: (id, name) ->
+    createItem: (uploadId, name) ->
       @itemTemplate ||= $('#upload-item-template').html()
       @$itemContainer ||= $('#upload-items')
-      @$itemContainer.append(@itemTemplate.replace(/{{id}}/g, id))
-      return @findItem(id)
+      @$itemContainer.append(@itemTemplate.replace(/{{uploadId}}/g, uploadId))
+      return @findItem(uploadId)
 
-    setupRemoveButton: ($item) ->
-      $item.getRemoveButton().on('click', ((e) ->
-        e.preventDefault()
-        id = @$item.getUploadId()
-        @uploader.cancel(id)
-        @uploader.deleteFile(id)
-        @$item.getRemoveButton().markAsInvisible()
-        return false
-      ).bind({ uploader: @uploader, $item: $item }))
-
-    setupThumbnail: ($item) ->
-      $thumbnail = $item.getThumbnail()
-      $thumbnail.load (->
-        # only display originals
-        # workaround to fix scaling.hideScaled = true
-        @$item.show() if @uploader.getParentId(@$item.getUploadId()) == null
-      ).bind({ uploader: @uploader, $item: $item })
-      uploadId = $item.getUploadId()
-      img = $thumbnail.get(0)
-
-      @uploader.drawThumbnail(uploadId, img, 350, false, (resizeInfo) ->
-        new Promise((resolve, reject) ->
-          options =
-            unsharpAmount: 80
-            unsharpRadius: 0.6
-            unsharpThreshold: 2
-          pica.WEBGL = true
-          pica.debug = console.log.bind(console) if <%= Rails.env.development? %>
-          pica.resizeCanvas resizeInfo.sourceCanvas, resizeInfo.targetCanvas, options, resolve
-        )
-      )
-
-    uploadStart: (id, filename) ->
-      $item = @findItem(id)
+    uploadStart: (uploadId, filename) ->
+      $item = @findItem(uploadId)
       # retry
       if $item.length > 0
         $item.getProgressBar().removeDanger()
       # new upload
       else
-        $item = @createItem(id)
-        $item.setTitle(filename)
-        @setupRemoveButton($item)
-        @setupThumbnail($item)
+        $item = @createItem(uploadId)
+          .setTitle(filename)
+          .setupRemoveButton(@uploader)
+          .setupThumbnail(@uploader)
       return true
 
-    uploadProgress: (id, percentage) ->
-      $item = @findItem(id)
-      $item.updateProgress(percentage)
+    uploadProgress: (uploadId, percentage) ->
+      $item = @findItem(uploadId)
+      $item.setProgress(percentage)
 
-    uploadComplete: (id) ->
-      $item = @findItem(id)
-      $item.markAsComplete()
+    thumbnailsUploadComplete: (uploadId) ->
+      thumbnails = @uploader.getUploads().filter((item) ->
+        item.parentId == uploadId
+      )
+      uploadedThumbnails = thumbnails.filter((item) ->
+        item.status == qq.status.UPLOAD_SUCCESSFUL
+      )
+      return thumbnails.length == uploadedThumbnails.length
+
+    uploadComplete: (uploadId) ->
+      upload = @uploader.getUploads(id: uploadId)
+      upload = @uploader.getUploads(id: upload.parentId) if upload.parentId
+      if upload.status == qq.status.UPLOAD_SUCCESSFUL and @thumbnailsUploadComplete(upload.id)
+        $item = @findItem(upload.id)
+        $item.markAsComplete()
       # retry all on the queue if a upload was completed successfully
       @retryAll()
       return true
 
-    uploadError: (id) ->
-      $item = @findItem(id)
+    uploadError: (uploadId) ->
+      $item = @findItem(uploadId)
       $item.getProgressBar().addDanger()
       return true
 
-    uploadDeleteComplete: (id) ->
-      $item = @findItem(id)
-      $item.hide()
+    uploadCancelOrDelete: (uploadId) ->
+      upload = @uploader.getUploads(id: uploadId)
+      if upload.status == qq.status.UPLOADING or
+         upload.status == qq.status.CANCELED
+        $item = @findItem(uploadId)
+        $item.hide() if $item.is(':visible')
+      return true
+
+    uploadDeleteComplete: (uploadId) ->
+      upload = @uploader.getUploads(id: uploadId)
+      if upload.status == qq.status.DELETED
+        $item = @findItem(uploadId)
+        $item.hide() if $item.is(':visible')
       return true
 
     # https://blog.fineuploader.com/2013/08/16/fine-uploader-s3-upload-directly-to-amazon-s3-from-your-browser/#client-side-integration
-    initializeUploader: (element) ->
+    initializeUploader: (uploadButton) ->
       @uploader = new qq.s3.FineUploaderBasic
         debug: <%= Rails.env.development? %>
-        button: document.getElementById('uploader-select-files')
-        # element: element
+        button: uploadButton
         request:
           endpoint: "https://<%= ENV.fetch('AWS_BUCKET') %>.s3.amazonaws.com"
           accessKey: "<%= ENV.fetch('AWS_ACCESS_KEY_ID') %>"
@@ -156,41 +198,44 @@
         validation:
           allowedExtensions: ["jpeg", "jpg"]
           acceptFiles: "image/jpeg"
-          sizeLimit: 50000000, # 50mb
-          itemLimit: 1000
-        # scaling:
-        #   sizes: [
-        #     { name: 'preview', maxSize: 640 }
-        #   ]
-        #   # # not working
-        #   # hideScaled: true
+        scaling:
+          sizes: [
+            { name: 'preview', maxSize: 640 }
+          ]
+          # # not working
+          # # workaround: @show() if uploader.getParentId(@getUploadId()) == null
+          # hideScaled: true
         # # not being called BUG?
         # thumbnails:
         #   customResizer: (resizeInfo) ->
-        #     new Promise((resolve, reject) ->
-        #       options =
-        #         unsharpAmount: 80
-        #         unsharpRadius: 0.6
-        #         unsharpThreshold: 2
-        #       pica.WEBGL = true
-        #       pica.debug = console.log.bind(console) if <%= Rails.env.development? %>
-        #       pica.resizeCanvas resizeInfo.sourceCanvas, resizeInfo.targetCanvas, options, resolve
-        #     )
+        #     # overriden by uploader.drawThumbnail?
         callbacks:
-          onProgress: (id, name, uploadedBytes, totalBytes) =>
-            @uploadProgress(id, uploadedBytes/totalBytes*100)
-          onUpload: (id, name) =>
-            @uploadStart(id, name)
-          onComplete: (id, name, responseJSON, xhr) =>
-            if responseJSON['success'] then @uploadComplete(id) else @uploadError(id)
-          onError: (id, name, errorReason, xhr) =>
-            @uploadError(id)
-          onDeleteComplete: (id, xhr, isError) =>
-            @uploadDeleteComplete(id)
-          onError: (id, name, errorReason, xhr) =>
-            @uploadError(id)
-          onStatusChange: (id, oldStatus, newStatus) =>
-            @addToRetryQueue(id) if newStatus == qq.status.UPLOAD_FAILED
+          onProgress: (uploadId, name, uploadedBytes, totalBytes) =>
+            @uploadProgress(uploadId, uploadedBytes/totalBytes*100)
+          onUpload: (uploadId, name) =>
+            @uploadStart(uploadId, name)
+          onComplete: (uploadId, name, responseJSON, xhr) =>
+            if responseJSON['success']
+              @uploadComplete(uploadId)
+            else
+              @uploadError(uploadId)
+          onError: (uploadId, name, errorReason, xhr) =>
+            @uploadError(uploadId)
+          onCancel: (uploadId) =>
+            @uploadCancelOrDelete(uploadId)
+          onDelete: (uploadId) =>
+            @uploadCancelOrDelete(uploadId)
+          onDeleteComplete: (uploadId, xhr, isError) =>
+            @uploadDeleteComplete(uploadId)
+          onError: (uploadId, name, errorReason, xhr) =>
+            @uploadError(uploadId)
+          onStatusChange: (uploadId, oldStatus, newStatus) =>
+            if newStatus == qq.status.UPLOAD_FAILED
+              @addToRetryQueue(uploadId)
+
+    ###
+    Retry Queue
+    ###
 
     addToRetryQueue: (uploadId) ->
       @retryQueue.push(uploadId)
@@ -214,9 +259,20 @@
       @retryQueue = []
       @monitorRetryQueue()
 
+    ###
+    Initializers
+    ###
+
+    initialize: ->
+      console.log('initialized') if <%= Rails.env.development? %>
+
     initializeForm: ->
-      @initializeUploader(document.getElementById('uploader'))
+      @initializeUploader(document.getElementById('upload-button'))
       @initializeRetryQueue()
+
+    ###
+    Actions
+    ###
 
     new: ->
       @initializeForm()
