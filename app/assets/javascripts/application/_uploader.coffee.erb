@@ -79,14 +79,13 @@
     )
     return @
 
-
   ###
   Application
   ###
 
   app = undefined
   app = window.Emporium or (window.Emporium = {})
-  app.uploads =
+  app._uploader =
 
     ###
     Uploader
@@ -166,22 +165,22 @@
         debug: <%= Rails.env.development? %>
         button: uploadButton
         request:
-          endpoint: "https://<%= ENV.fetch('AWS_BUCKET') %>.s3.amazonaws.com"
-          accessKey: "<%= ENV.fetch('AWS_ACCESS_KEY_ID') %>"
+          endpoint: "<%= CloudStorage.endpoint %>"
+          accessKey: "<%= CloudStorage.accessKey %>"
         objectProperties:
           key: (fileId) =>
             filename = @uploader.getName(fileId)
             uuid = @uploader.getUuid(fileId)
             ext = filename.substr(filename.lastIndexOf('.') + 1)
-            "uploads/#{uuid}.#{ext}"
+            "photos/#{uuid}.#{ext}"
         signature:
           endpoint: '/uploads/sign'
           version: 4
         uploadSuccess:
-          endpoint: '/uploads'
+          endpoint: '/photos'
         deleteFile:
           enabled: true
-          endpoint: '/uploads'
+          endpoint: '/photos'
         retry:
           enabledAuto: true
         resume:
@@ -233,6 +232,8 @@
             if newStatus == qq.status.UPLOAD_FAILED
               @addToRetryQueue(uploadId)
 
+      @initializeRetryQueue()
+
     ###
     Retry Queue
     ###
@@ -259,23 +260,5 @@
       @retryQueue = []
       @monitorRetryQueue()
 
-    ###
-    Initializers
-    ###
-
-    initialize: ->
-      console.log('initialized') if <%= Rails.env.development? %>
-
-    initializeForm: ->
-      @initializeUploader(document.getElementById('upload-button'))
-      @initializeRetryQueue()
-
-    ###
-    Actions
-    ###
-
-    new: ->
-      @initializeForm()
-
-  app.uploads
+  app._uploader
 ) jQuery

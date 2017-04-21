@@ -1,34 +1,20 @@
 # Emporium
 
-## Build
+## AWS S3
 
-```
-docker-compose build
-```
-
-## Setup db
-
-```
-docker-compose up
-docker-compose run web rails db:create
-docker-compose run web rails db:migrate
-```
-
-## Console
-
-```
-docker run -it -v `pwd`:/app emporium_web bundle exec rails c
-```
-
-## Configure CORS for S3 upload
-
-TODO: Set `AllowedOrigins` to production host.
-
-TODO: Set `AllowedHeaders` to more specific: `content-type`, `origin`, `x-amz-acl`, `x-amz-meta-qqfilename`, `x-amz-date`, `authorization`.
+Create Bucket:
 
 ```
 export EMPORIUM_S3_BUCKET=…
 ```
+
+```
+aws s3api create-bucket --acl private --bucket $EMPORIUM_S3_BUCKET
+```
+
+TODO: Set `AllowedOrigins` to production host.
+
+TODO: Set `AllowedHeaders` to more specific: `content-type`, `origin`, `x-amz-acl`, `x-amz-meta-qqfilename`, `x-amz-date`, `authorization`.
 
 ```
 cat >> cors.json <<- END
@@ -115,10 +101,26 @@ emporium_access_key=`aws iam create-access-key --user-name emporium`
 export EMPORIUM_S3_ACCESS_KEY=`echo $emporium_access_key | jq -r '.AccessKey.AccessKeyId'`
 ```
 
+## Dotenv
+
+```
+cp .env.dist .env
+```
+
+Configure `.env` with development credentials.
+
 ## Heroku
 
 Configure Heroku:
 
 ```
 heroku config:set AWS_REGION=us-east-1 AWS_ACCESS_KEY_ID=… AWS_SECRET_ACCESS_KEY=… AWS_BUCKET=emporium --app=…
+```
+
+## Feature Specs
+
+Feature specs require AWS credentials:
+
+```
+foreman run rspec
 ```

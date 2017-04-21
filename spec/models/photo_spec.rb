@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe Upload, type: :model do
-  subject { build :upload }
+RSpec.describe Photo, type: :model do
+  subject { build :photo }
 
   describe '#valid?' do
     context 'by default' do

@@ -44,6 +44,10 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.5.0'
   gem 'factory_girl_rails', '~> 4.8.0'
   gem 'wisper-rspec', '~> 0.0.3', require: false
+
+  gem 'capybara', '~> 2.13.0'
+  gem 'webdrivers', '~> 2.4.0'
+  gem 'selenium-webdriver', '~> 3.4.0'
 end
 
 group :development do
@@ -78,3 +82,5 @@ gem 'aws-sdk', '~> 2.8'
 
 # A micro library providing Ruby objects with Publish-Subscribe capabilities
 gem 'wisper', '2.0.0'
+
+gem 'devise', '4.2.1'
