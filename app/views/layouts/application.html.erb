@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Emporium</title>
+    <title><%= t('application.brand') %></title>
 
     <%= csrf_meta_tags %>
 
@@ -17,23 +17,46 @@
   <body data-controller="<%= controller.controller_name %>" data-action="<%= controller.action_name %>">
 
     <!-- Navigation -->
-    <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+    <nav class="navbar navbar-toggleable-md navbar-light bg-faded mb-4">
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <a class="navbar-brand" href="<%= root_path %>">Emporium</a>
+      <%= link_to(root_path, class: 'navbar-brand') do %>
+        <i class="fa fa-camera-retro fa-lg" aria-hidden="true"></i>
+        <%= t('application.brand') %>
+      <% end %>
 
       <div class="collapse navbar-collapse" id="navbarToggler">
         <ul class="navbar-nav mr-auto mt-2 mt-md-0">
           <li class="nav-item">
-            <a class="nav-link" href="<%= new_upload_path %>">Uploads</a>
+            <%= link_to(new_photo_path, class: 'nav-link') do %>
+              <i class="fa fa-picture-o" aria-hidden="true"></i>
+              <%= t('photos.title') %>
+            <% end %>
           </li>
+        </ul>
+
+        <ul class="nav navbar-nav pull-xs-right">
+          <%- if user_signed_in? %>
+            <li class="nav-item">
+              <%= link_to(destroy_user_session_path, class: 'nav-link', method: :delete) do %>
+                <i class="fa fa-sign-out fa-lg" aria-hidden="true"></i>
+                <%= t('devise.links.sign_out') %>
+              <% end %>
+            </li>
+          <% else %>
+            <%= link_to(new_user_session_path, class: 'nav-link') do %>
+              <i class="fa fa-sign-in fa-lg" aria-hidden="true"></i>
+              <%= t('devise.links.log_in') %>
+            <% end %>
+          <% end -%>
         </ul>
       </div>
     </nav>
 
     <!-- Page Content -->
     <div class="container">
+      <%= render partial: 'flash' %>
       <%= yield %>
     </div>
   </body>

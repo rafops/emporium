@@ -20,4 +20,51 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  application:
+    brand: "Emporium"
+  devise:
+    confirmations:
+      new:
+        title: "Resend confirmation instructions"
+        submit: "Resend confirmation instructions"
+    passwords:
+      new:
+        title: "Forgot your password?"
+        submit: "Send me reset password instructions"
+      edit:
+        title: "Change your password"
+        submit: "Change my password"
+      new_password: "New password"
+      confirm_new_password: "Confirm new password"
+      characters_minimum: "%{length} characters minimum"
+    registrations:
+      new:
+        title: "Sign up"
+        submit: "Sign up"
+      edit:
+        title: "My Account"
+        currently_waiting_confirmation_for: "Currently waiting confirmation for: %{email}"
+        leave_blank_if_you_dont_want_to_change_it: "leave blank if you don't want to change it"
+        we_need_your_current_password_to_confirm_your_changes: "we need your current password to confirm your changes"
+        submit: "Update"
+    sessions:
+      new:
+        title: "Log in"
+    unlocks:
+      new:
+        title: "Resend unlock instructions"
+        submit: "Resend unlock instructions"
+    links:
+      log_in: "Log in"
+      sign_out: "Sign out"
+      sign_up: "Sign up"
+      forgot_your_password: "Forgot your password?"
+      didnt_receive_confirmation_instructions: "Didn't receive confirmation instructions?"
+      didnt_receive_unlock_instruction: "Didn't receive unlock instructions?"
+      sign_in_with_provider: "Sign in with %{provider}"
+  photos:
+    title: "Photos"
+  uploader:
+    cloud_storage_is_not_available: "Cloud storage is not available"
+    click_the_button_bellow_to_select_files: "Click the button bellow to select files"
+    select_files: "Select files"

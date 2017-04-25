@@ -5,7 +5,7 @@ module CloudStorage
       @s3_object = bucket.object(object_key)
     end
 
-    def presigned_url
+    def url
       presigner.presigned_url(:get_object, bucket: bucket.name, key: s3_object.key)
     end
 

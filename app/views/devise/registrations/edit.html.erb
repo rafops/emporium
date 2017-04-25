@@ -1,0 +1,49 @@
+<div class="row">
+  <div class="col">
+    <h1><%= t('devise.registrations.edit.title') %></h1>
+    <hr>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+      <%= devise_error_messages! %>
+
+      <div class="form-group">
+        <%= f.label :email, for: 'user_email' %>
+        <%= f.email_field :email, id: 'user_email', autofocus: true, placeholder: '', class: 'form-control' %>
+      </div>
+
+      <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+        <div><%= t('devise.registrations.edit.currently_waiting_confirmation_for', email: resource.unconfirmed_email) %></div>
+      <% end %>
+
+      <div class="form-group">
+        <%= f.label :password, for: 'user_password' %> <i>(<%= t('devise.registrations.edit.leave_blank_if_you_dont_want_to_change_it') %>)</i><br />
+        <%= f.password_field :password, id: 'user_password', autofocus: true, autocomplete: "off", placeholder: '', class: 'form-control' %>
+        <% if @minimum_password_length %>
+          <br />
+          <em>(<%= t('devise.passwords.characters_minimum', length: @minimum_password_length) %>)</em>
+        <% end %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :password_confirmation, for: 'user_password_confirmation' %><br />
+        <%= f.password_field :password_confirmation, id: 'user_password_confirmation', autocomplete: "off", class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :current_password, for: 'user_current_password' %> <i>(<%= t('devise.registrations.edit.we_need_your_current_password_to_confirm_your_changes') %>)</i><br />
+        <%= f.password_field :current_password, id: 'user_current_password', autocomplete: "off", class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= f.submit t('devise.registrations.edit.submit'), class: "btn btn-primary btn-block btn-lg" %>
+      </div>
+
+    <% end %>
+
+  </div>
+</div>

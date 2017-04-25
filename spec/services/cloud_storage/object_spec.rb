@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe CloudStorage::Object do
 
-  let(:upload) { build :upload }
-  let(:object_key) { upload.object_key }
+  let(:photo) { build :photo }
+  let(:object_key) { photo.object_key }
   let(:bucket) { 'emporium' }
   subject { described_class.new(object_key) }
 
@@ -12,9 +12,9 @@ RSpec.describe CloudStorage::Object do
     Aws.config[:s3] = { stub_responses: true }
   end
 
-  describe '#presigned_url' do
-    it 'generates a presigned url for the object' do
-      expect(subject.presigned_url).to start_with "https://#{bucket}.s3.us-stubbed-1.amazonaws.com/#{object_key}"
+  describe '#url' do
+    it 'generates an url for the object' do
+      expect(subject.url).to start_with "https://#{bucket}.s3.us-stubbed-1.amazonaws.com/#{object_key}"
     end
   end
 

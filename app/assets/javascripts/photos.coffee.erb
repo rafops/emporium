@@ -1,0 +1,30 @@
+(($) ->
+
+  ###
+  Application
+  ###
+
+  app = undefined
+  app = window.Emporium or (window.Emporium = {})
+  app.photos =
+
+    ###
+    Initializers
+    ###
+
+    initialize: ->
+      console.log('initialized') if <%= Rails.env.development? %>
+
+    initializeForm: ->
+      @initializeUploader(document.getElementById('upload-button'))
+
+    ###
+    Actions
+    ###
+
+    new: ->
+      @initializeForm()
+
+  $.extend(app.photos, app._uploader)
+  app.photos
+) jQuery
