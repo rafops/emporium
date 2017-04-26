@@ -1,12 +1,39 @@
 # Emporium
 
-## AWS S3
+## Environment
 
-Create Bucket:
+Copy and configure `.env` with appropriate credentials:
+
+```
+cp .env.dist .env
+```
+
+## Development
+
+```
+rbenv install 2.3.3
+gem install bundler
+brew install postgresql
+brew services start postgresql
+bundle install
+foreman run rake db:create
+foreman run rake db:migrate
+foreman run rails s
+```
+
+## Test
+
+```
+foreman run rspec
+```
+
+## AWS S3
 
 ```
 export EMPORIUM_S3_BUCKET=…
 ```
+
+Create Bucket:
 
 ```
 aws s3api create-bucket --acl private --bucket $EMPORIUM_S3_BUCKET
@@ -101,14 +128,6 @@ emporium_access_key=`aws iam create-access-key --user-name emporium`
 export EMPORIUM_S3_ACCESS_KEY=`echo $emporium_access_key | jq -r '.AccessKey.AccessKeyId'`
 ```
 
-## Dotenv
-
-```
-cp .env.dist .env
-```
-
-Configure `.env` with development credentials.
-
 ## Heroku
 
 Configure Heroku:
@@ -117,10 +136,3 @@ Configure Heroku:
 heroku config:set AWS_REGION=us-east-1 AWS_ACCESS_KEY_ID=… AWS_SECRET_ACCESS_KEY=… AWS_BUCKET=emporium --app=…
 ```
 
-## Feature Specs
-
-Feature specs require AWS credentials:
-
-```
-foreman run rspec
-```
