@@ -1,17 +1,7 @@
 <div class="row">
-<% @photos.each do |photo| %>
-      <% counter = 0 %>
-      <% if photo.parent_uuid != nil %>
-        <% counter += 1 %>
-        <% if counter % 4 == 0 %>
-          <div = class="row">
-        <% end %>
-        <div class="col-xs-6 col-md-3">
-            <img src='<%= CloudStorage::Object.new(photo.object_key).url %>' class="img-thumbnail"/>
-        </div>
-        <% if counter % 4 == 0 %>
-          </div>
-        <% end %>
-      <% end %>
+<% @photos_low_res.find_each do |photo| %>
+  <div class="col-xs-6 col-md-3">
+    <img src="<%= CloudStorage::Object.new(photo.object_key).url %>" class="img-thumbnail"/>
+  </div>
 <% end %>
 </div>
