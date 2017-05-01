@@ -11,14 +11,15 @@ cp .env.dist .env
 ## Development
 
 ```
-rbenv install 2.3.3
+rbenv install 2.3.4
 gem install bundler
 brew install postgresql
-brew services start postgresql
+pg_ctl -D /usr/local/var/postgres start
+createuser --superuser emporium
 bundle install
-foreman run rake db:create
-foreman run rake db:migrate
-foreman run rails s
+bundle exec foreman run rake db:create
+bundle exec foreman run rake db:migrate
+bundle exec foreman run rails s
 ```
 
 ## Test
