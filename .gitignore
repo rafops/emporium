@@ -19,4 +19,4 @@
 # Node.js
 /node_modules/*
 
-.git
+.env
