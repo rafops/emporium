@@ -84,3 +84,7 @@ gem 'aws-sdk', '~> 2.8'
 gem 'wisper', '2.0.0'
 
 gem 'devise', '4.2.1'
+
+# https://github.com/wildbit/postmark-rails
+# https://postmarkapp.com
+gem 'postmark-rails', '~> 0.15.0'
