@@ -1,7 +1,7 @@
 <div class="row">
 <% @photos_low_res.each do |photo| %>
-  <div class="col-6 col-md-3">
-    <img src="<%= get_cloud_storage_object(photo) %>" class="img-thumbnail"/>
+  <div class="col-md-4">
+    <img src="<%= get_cloud_storage_object(photo) %>" class="img-thumbnail home-image-margin-bottom"/>
   </div>
 <% end %>
 </div>
