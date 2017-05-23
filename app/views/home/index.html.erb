@@ -1,7 +1,11 @@
-<div class="row">
+<div class="card-columns">
 <% @photos_low_res.each do |photo| %>
-  <div class="col-6 col-md-3">
-    <img src="<%= get_cloud_storage_object(photo) %>" class="img-thumbnail"/>
+  <div class="card mb-2">
+    <img src="<%= get_cloud_storage_object(photo) %>" class="card-img-top img-fluid"/>
+    <div class="card-block">
+      <h4 class="card-title"><%= photo.name %></h4>
+      <p class="card-text"><small class="text-muted">Uploaded <%= photo.created_at %></small></p>
+    </div>
   </div>
 <% end %>
 </div>
