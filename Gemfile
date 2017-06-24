@@ -1,4 +1,4 @@
-ruby '2.3.4'
+ruby '2.4.1'
 
 source 'https://rubygems.org'
 
@@ -9,9 +9,9 @@ end
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.0.2'
+gem 'rails', '~> 5.0.4'
 # Use postgresql as the database for Active Record
-gem 'pg', '~> 0.18'
+gem 'pg', '~> 0.21'
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
 # Use SCSS for stylesheets
@@ -41,19 +41,19 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
 
-  gem 'rspec-rails', '~> 3.5.0'
-  gem 'factory_girl_rails', '~> 4.8.0'
+  gem 'rspec-rails', '~> 3.6'
+  gem 'factory_girl_rails', '~> 4.8'
   gem 'wisper-rspec', '~> 0.0.3', require: false
 
-  gem 'capybara', '~> 2.13.0'
+  gem 'capybara', '~> 2.14.0'
   gem 'webdrivers', '~> 2.4.0'
   gem 'selenium-webdriver', '~> 3.4.0'
 end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
-  gem 'web-console', '>= 3.3.0'
-  gem 'listen', '~> 3.0.5'
+  gem 'web-console', '>= 3.3.1'
+  gem 'listen', '~> 3.0.8'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
@@ -78,12 +78,12 @@ gem 'font-awesome-sass', '~> 4.7.0'
 gem 'foreman', '~> 0.82.0'
 
 # The official AWS SDK for Ruby
-gem 'aws-sdk', '~> 2.8'
+gem 'aws-sdk', '~> 2.10'
 
 # A micro library providing Ruby objects with Publish-Subscribe capabilities
 gem 'wisper', '2.0.0'
 
-gem 'devise', '4.2.1'
+gem 'devise', '4.3.0'
 
 # https://github.com/wildbit/postmark-rails
 # https://postmarkapp.com

@@ -6,17 +6,15 @@
 
 # Ignore bundler config.
 /.bundle
-
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*
 !/log/.keep
 !/tmp/.keep
-
 # Ignore Byebug command history file.
 .byebug_history
-
 # Node.js
 /node_modules/*
-
 .env
+/.vagrant
+/*.log
