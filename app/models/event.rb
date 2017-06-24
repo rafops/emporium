@@ -1,3 +1,3 @@
 class Event < ApplicationRecord
-  has_many :photos, dependant: :delete_all
+  has_many :photos, dependent: :delete_all
 end
