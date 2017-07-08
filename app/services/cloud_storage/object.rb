@@ -2,11 +2,11 @@ module CloudStorage
   class Object
 
     def initialize(object_key)
+      CloudStorage.config ## TODO fix this shit
       @s3_object = bucket.object(object_key)
     end
 
     def url
-      # TODO this method is broken since it depends on environment variables!!!
       presigner.presigned_url(:get_object, bucket: bucket.name, key: s3_object.key)
     end
 
@@ -23,6 +23,7 @@ module CloudStorage
       end
 
       def presigner
+        # TODO use a different mode as documented here http://docs.aws.amazon.com/sdk-for-ruby/v2/developer-guide/aws-sdk-ruby-dg.pdf
         @presigner ||= Aws::S3::Presigner.new
       end
   end

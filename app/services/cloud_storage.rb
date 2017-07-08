@@ -28,6 +28,17 @@ module CloudStorage
       Rails.application.secrets.aws_bucket
     end
 
+    ## TODO fix this shit
+    def config
+      @config ||= Aws.config.update(
+        region: Rails.application.secrets.aws_region,
+        credentials: Aws::Credentials.new(
+          Rails.application.secrets.aws_access_key_id,
+          Rails.application.secrets.aws_secret_access_key
+        )
+      )
+    end
+
   end
 
 end
