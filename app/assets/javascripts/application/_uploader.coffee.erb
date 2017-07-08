@@ -166,7 +166,7 @@
         button: uploadButton
         request:
           endpoint: "<%= CloudStorage.endpoint %>"
-          accessKey: "<%= CloudStorage.accessKey %>"
+          accessKey: "<%= CloudStorage.aws_access_key_id %>"
         objectProperties:
           key: (fileId) =>
             filename = @uploader.getName(fileId)

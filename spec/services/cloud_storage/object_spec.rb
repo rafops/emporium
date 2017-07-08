@@ -8,7 +8,7 @@ RSpec.describe CloudStorage::Object do
   subject { described_class.new(object_key) }
 
   before do
-    allow(ENV).to receive(:fetch).with('AWS_BUCKET').and_return(bucket)
+    allow(CloudStorage).to receive(:aws_bucket).and_return(bucket)
     Aws.config[:s3] = { stub_responses: true }
   end
 

@@ -2,19 +2,32 @@ module CloudStorage
 
   class << self
     def available?
-      ENV.has_key?('AWS_REGION') and
-      ENV.has_key?('AWS_ACCESS_KEY_ID') and
-      ENV.has_key?('AWS_SECRET_ACCESS_KEY') and
-      ENV.has_key?('AWS_BUCKET')
+      aws_region            and
+      aws_access_key_id     and
+      aws_secret_access_key and
+      aws_bucket
     end
 
     def endpoint
-      "https://#{ENV.fetch('AWS_BUCKET')}.s3.amazonaws.com"
+      "https://#{aws_bucket}.s3.amazonaws.com"
     end
 
-    def accessKey
-      ENV.fetch('AWS_ACCESS_KEY_ID')
+    def aws_region
+      Rails.application.secrets.aws_region
     end
+
+    def aws_access_key_id
+      Rails.application.secrets.aws_access_key_id
+    end
+
+    def aws_secret_access_key
+      Rails.application.secrets.aws_secret_access_key
+    end
+
+    def aws_bucket
+      Rails.application.secrets.aws_bucket
+    end
+
   end
 
 end
