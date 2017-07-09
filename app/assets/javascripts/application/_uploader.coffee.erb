@@ -66,15 +66,15 @@
     uploadId = @getUploadId()
     img = $thumbnail.get(0)
 
-    uploader.drawThumbnail(uploadId, img, 350, false, (resizeInfo) ->
+    uploader.drawThumbnail(uploadId, img, <%= PhotoService.thumbnail_size %>, false, (resizeInfo) ->
       new Promise((resolve, reject) ->
         options =
           unsharpAmount: 80
           unsharpRadius: 0.6
           unsharpThreshold: 2
-        pica.WEBGL = true
-        pica.debug = console.log.bind(console) if <%= Rails.env.development? %>
-        pica.resizeCanvas resizeInfo.sourceCanvas, resizeInfo.targetCanvas, options, resolve
+        pica().resize(resizeInfo.sourceCanvas, resizeInfo.targetCanvas, options).then((result) ->
+          resolve()
+        )
       )
     )
     return @
@@ -198,16 +198,26 @@
           allowedExtensions: ["jpeg", "jpg"]
           acceptFiles: "image/jpeg"
         scaling:
-          sizes: [
-            { name: 'preview', maxSize: 640 }
-          ]
+          sizes: <%= PhotoService.uploader_sizes.to_json %>
+          customResizer: (resizeInfo) ->
+            @__targetCanvas = resizeInfo.targetCanvas
+            new Promise((resolve, reject) =>
+              options =
+                unsharpAmount: 80
+                unsharpRadius: 0.6
+                unsharpThreshold: 2
+              pica().resize(resizeInfo.sourceCanvas, resizeInfo.targetCanvas, options).then((result) =>
+                # TODO improve watermark
+                ctx=@__targetCanvas.getContext('2d')
+                ctx.font = "12px serif"
+                ctx.fillStyle = "red"
+                ctx.fillText("EMPORIUM" + Date().toString(),10, 10)
+                resolve()
+              , reject)
+            )
           # # not working
           # # workaround: @show() if uploader.getParentId(@getUploadId()) == null
           # hideScaled: true
-        # # not being called BUG?
-        # thumbnails:
-        #   customResizer: (resizeInfo) ->
-        #     # overriden by uploader.drawThumbnail?
         callbacks:
           onProgress: (uploadId, name, uploadedBytes, totalBytes) =>
             @uploadProgress(uploadId, uploadedBytes/totalBytes*100)

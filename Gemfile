@@ -65,7 +65,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 source 'https://rails-assets.org' do
   gem 'rails-assets-tether', '~> 1.4.0'
   gem 'rails-assets-fine-uploader', '~> 5.13.0'
-  gem 'rails-assets-pica', '~> 2.0.8'
+  gem 'rails-assets-pica', '~> 3.0.0'
 end
 
 # Bootstrap 4

@@ -1,7 +1,7 @@
 <div class="row">
   <% @photos_low_res.each do |photo| %>
     <div class="col-sm-6 col-md-4 p-2">
-      <div class="card home-card" style="background-image: url('<%= photo_url(photo) %>');">
+      <div class="card home-card" style="background-image: url('<%= PhotoService.url(photo) %>');">
         <div class="card-block">
           <p class="card-text"><small class="text-muted">Uploaded <%= photo.created_at %></small></p>
         </div>

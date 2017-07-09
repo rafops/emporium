@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170523190034) do
+ActiveRecord::Schema.define(version: 20170709173436) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(version: 20170523190034) do
     t.datetime "updated_at", null: false
     t.uuid "parent_uuid"
     t.integer "event_id"
+    t.integer "size"
     t.index ["event_id"], name: "index_photos_on_event_id"
     t.index ["parent_uuid"], name: "index_photos_on_parent_uuid"
     t.index ["uuid"], name: "index_photos_on_uuid", unique: true
