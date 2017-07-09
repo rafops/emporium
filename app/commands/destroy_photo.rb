@@ -1,8 +1,8 @@
 class DestroyPhoto
   include Wisper::Publisher
 
-  def initialize(cloud_storage_object: CloudStorage::Object, **photo_attributes)
-    @cloud_storage_object = cloud_storage_object
+  def initialize(storage_service_object: StorageService::Object, **photo_attributes)
+    @storage_service_object = storage_service_object
     @photo_attributes = photo_attributes
   end
 
@@ -11,7 +11,7 @@ class DestroyPhoto
     return publish :not_found unless photo
 
     if photo.destroy
-      cloud_storage_object.new(photo.object_key).delete
+      storage_service_object.new(photo.object_key).delete
       publish :success
     else
       publish :failure
@@ -20,5 +20,5 @@ class DestroyPhoto
 
   protected
 
-    attr_reader :photo_attributes, :cloud_storage_object
+    attr_reader :photo_attributes, :storage_service_object
 end

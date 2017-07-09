@@ -1,8 +1,8 @@
-module CloudStorage
+module StorageService
   class Object
 
     def initialize(object_key)
-      CloudStorage.config ## TODO fix this shit
+      StorageService.config ## TODO fix this shit
       @s3_object = bucket.object(object_key)
     end
 
@@ -19,7 +19,7 @@ module CloudStorage
       attr_reader :s3_object
 
       def bucket
-        @bucket ||= Aws::S3::Bucket.new(CloudStorage.aws_bucket)
+        @bucket ||= Aws::S3::Bucket.new(StorageService.bucket)
       end
 
       def presigner

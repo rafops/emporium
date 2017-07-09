@@ -165,8 +165,8 @@
         debug: <%= Rails.env.development? %>
         button: uploadButton
         request:
-          endpoint: "<%= CloudStorage.endpoint %>"
-          accessKey: "<%= CloudStorage.aws_access_key_id %>"
+          endpoint: "<%= StorageService.endpoint %>"
+          accessKey: "<%= StorageService.access_key_id %>"
         objectProperties:
           key: (fileId) =>
             filename = @uploader.getName(fileId)

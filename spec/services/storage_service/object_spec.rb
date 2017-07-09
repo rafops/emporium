@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe CloudStorage::Object do
+RSpec.describe StorageService::Object do
 
   let(:photo) { build :photo }
   let(:object_key) { photo.object_key }
@@ -8,13 +8,13 @@ RSpec.describe CloudStorage::Object do
   subject { described_class.new(object_key) }
 
   before do
-    allow(CloudStorage).to receive(:aws_bucket).and_return(bucket)
+    allow(StorageService).to receive(:bucket).and_return(bucket)
     Aws.config[:s3] = { stub_responses: true }
   end
 
   describe '#url' do
     it 'generates an url for the object' do
-      expect(subject.url).to start_with "https://#{bucket}.s3.us-stubbed-1.amazonaws.com/#{object_key}"
+      expect(subject.url).to start_with "https://#{bucket}.s3.amazonaws.com/#{object_key}"
     end
   end
 

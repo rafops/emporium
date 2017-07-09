@@ -2,7 +2,7 @@ class SignUpload
   include Wisper::Publisher
 
   def initialize(raw_post)
-    @signer = CloudStorage::Signer.new(raw_post)
+    @signer = StorageService::Signer.new(raw_post)
   end
 
   def call
