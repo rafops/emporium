@@ -1,4 +1,4 @@
-module CloudStorage
+module StorageService
   class Object
 
     def initialize(object_key)
@@ -18,10 +18,11 @@ module CloudStorage
       attr_reader :s3_object
 
       def bucket
-        @bucket ||= Aws::S3::Bucket.new(ENV.fetch('AWS_BUCKET'))
+        @bucket ||= Aws::S3::Bucket.new(StorageService.bucket)
       end
 
       def presigner
+        # TODO use a different mode as documented here http://docs.aws.amazon.com/sdk-for-ruby/v2/developer-guide/aws-sdk-ruby-dg.pdf
         @presigner ||= Aws::S3::Presigner.new
       end
   end

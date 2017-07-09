@@ -75,6 +75,6 @@ en:
   photos:
     title: "Photos"
   uploader:
-    cloud_storage_is_not_available: "Cloud storage is not available"
+    storage_service_is_not_available: "Storage service is not available"
     click_the_button_bellow_to_select_files: "Click the button bellow to select files"
     select_files: "Select files"

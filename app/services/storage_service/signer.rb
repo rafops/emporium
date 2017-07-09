@@ -1,6 +1,6 @@
 # Reference
 # https://github.com/FineUploader/php-s3-server/blob/master/endpoint-cors.php
-module CloudStorage
+module StorageService
   class Signer
 
     def initialize(raw_post)
@@ -62,7 +62,7 @@ module CloudStorage
 
       def signature(payload, json_request)
         date, region = date_and_region(json_request)
-        k_date = hmac("AWS4#{ENV.fetch('AWS_SECRET_ACCESS_KEY')}", date)
+        k_date = hmac("AWS4#{StorageService.secret_access_key}", date)
         k_region = hmac(k_date, region)
         k_service = hmac(k_region, 's3')
         k_credentials = hmac(k_service, 'aws4_request')

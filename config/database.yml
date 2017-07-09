@@ -21,7 +21,7 @@ default: &default
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: <%= ENV.fetch("DATABASE_USERNAME") { 'emporium' } %>
-  host:  <%= ENV.fetch("DATABASE_HOST") { 'localhost' } %>
+  host:  <%= ENV.fetch("DATABASE_HOST") { '127.0.0.1' } %>
 
 development:
   <<: *default
@@ -82,6 +82,4 @@ test:
 #
 production:
   <<: *default
-  database: emporium_production
-  username: emporium
-  password: <%= ENV['EMPORIUM_DATABASE_PASSWORD'] %>
+  url: <%= ENV["DATABASE_URL"] %>
