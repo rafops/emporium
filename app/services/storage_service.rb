@@ -28,7 +28,6 @@ module StorageService
       Rails.application.secrets.aws_bucket
     end
 
-    ## TODO fix this shit
     def config
       @config ||= Aws.config.update(
         region: region,

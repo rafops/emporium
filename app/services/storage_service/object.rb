@@ -2,7 +2,6 @@ module StorageService
   class Object
 
     def initialize(object_key)
-      StorageService.config ## TODO fix this shit
       @s3_object = bucket.object(object_key)
     end
 
