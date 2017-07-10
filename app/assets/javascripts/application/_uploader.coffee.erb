@@ -72,9 +72,7 @@
           unsharpAmount: 80
           unsharpRadius: 0.6
           unsharpThreshold: 2
-        pica().resize(resizeInfo.sourceCanvas, resizeInfo.targetCanvas, options).then((result) ->
-          resolve()
-        )
+        pica().resize(resizeInfo.sourceCanvas, resizeInfo.targetCanvas, options).then(resolve, reject)
       )
     )
     return @
@@ -200,18 +198,20 @@
         scaling:
           sizes: <%= PhotoService.uploader_sizes.to_json %>
           customResizer: (resizeInfo) ->
-            @__targetCanvas = resizeInfo.targetCanvas
-            new Promise((resolve, reject) =>
+            new Promise((resolve, reject) ->
               options =
                 unsharpAmount: 80
                 unsharpRadius: 0.6
                 unsharpThreshold: 2
-              pica().resize(resizeInfo.sourceCanvas, resizeInfo.targetCanvas, options).then((result) =>
-                # TODO improve watermark
-                ctx=@__targetCanvas.getContext('2d')
-                ctx.font = "12px serif"
-                ctx.fillStyle = "red"
-                ctx.fillText("EMPORIUM" + Date().toString(),10, 10)
+              pica().resize(resizeInfo.sourceCanvas, resizeInfo.targetCanvas, options).then((result) ->
+                
+                ## Only apply watermark if resized image is larger than a certain value
+                watermarkThreshold = <%= PhotoService::WATERMARK_THRESHOLD %>
+                if result.width >= watermarkThreshold
+                  ctx=result.getContext('2d')
+                  wmImg = document.getElementById('watermark').querySelector('img')
+                  ctx.drawImage(wmImg, 0, 0, wmImg.width, wmImg.height, 0, 0, result.width, result.height)
+
                 resolve()
               , reject)
             )
