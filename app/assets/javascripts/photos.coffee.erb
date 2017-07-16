@@ -29,9 +29,15 @@
     initializeEventInput: ->
       @$eventInput = $('#event-input')
       @$eventInput.selectize(
-        createOnBlur: true,
-        create: true
+        create: true,
+        sortField: 'text'
       )
+      @$photographerInput = $('#photographer-input')
+      @$photographerInput.selectize(
+        create: true,
+        sortField: 'text'
+      )
+
 
   $.extend(app.photos, app._uploader)
   app.photos

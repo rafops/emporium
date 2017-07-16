@@ -1,6 +1,5 @@
 /* https://raw.githubusercontent.com/selectize/selectize.js/v0.12.4/dist/css/selectize.bootstrap3.css */
 
-
 .selectize-control.plugin-drag_drop.multi > .selectize-input > div.ui-sortable-placeholder {
   visibility: visible !important;
   background: #f2f2f2 !important;
@@ -22,10 +21,13 @@
   padding: 3px 12px;
   border-bottom: 1px solid #d0d0d0;
   background: #f8f8f8;
-  /* respect $enable-rounded: false */
   // -webkit-border-radius: 4px 4px 0 0;
   // -moz-border-radius: 4px 4px 0 0;
   // border-radius: 4px 4px 0 0;
+  /* respect $enable-rounded: false */
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
 }
 .selectize-dropdown-header-close {
   position: absolute;
@@ -78,10 +80,13 @@
   display: inline-block;
   padding: 1px 0 0 0;
   border-left: 1px solid rgba(0, 0, 0, 0);
-  /* respect $enable-rounded: false */
   // -webkit-border-radius: 0 2px 2px 0;
   // -moz-border-radius: 0 2px 2px 0;
   // border-radius: 0 2px 2px 0;
+  /* respect $enable-rounded: false */
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -137,10 +142,13 @@
   box-sizing: border-box;
   -webkit-box-shadow: none;
   box-shadow: none;
-  /* respect $enable-rounded: false */
   // -webkit-border-radius: 4px;
   // -moz-border-radius: 4px;
   // border-radius: 4px;
+  /* respect $enable-rounded: false */
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
 }
 .selectize-control.multi .selectize-input.has-items {
   padding: 5px 12px 2px;
@@ -158,10 +166,13 @@
   /* adjust to bootstrap 4 */
 }
 .selectize-input.dropdown-active {
-  /* respect $enable-rounded: false */
   // -webkit-border-radius: 4px 4px 0 0;
   // -moz-border-radius: 4px 4px 0 0;
   // border-radius: 4px 4px 0 0;
+  /* respect $enable-rounded: false */
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
 }
 .selectize-input > * {
   vertical-align: baseline;
@@ -171,81 +182,27 @@
   *display: inline;
 }
 .selectize-control.multi .selectize-input > div {
-  // cursor: pointer;
-  // margin: 0 3px 3px 0;
-  // padding: 1px 3px;
-  // background: #efefef;
-  // color: #333333;
-  // border: 0 solid rgba(0, 0, 0, 0);
-  /* overriden by a bootstrap 4 .btn.btn-secondary.btn-sm bellow */
+  cursor: pointer;
+  margin: 0 3px 3px 0;
+  padding: 1px 3px;
+  background: #efefef;
+  color: #333333;
+  border: 0 solid rgba(0, 0, 0, 0);
 }
-
-/* -------------------------------------------------------------------------- */
-/* https://raw.githubusercontent.com/twbs/bootstrap/v4.0.0-alpha.6/scss/_buttons.scss */
-.selectize-control.multi .selectize-input > div {
-  /* .btn */
-  display: inline-block;
-  font-weight: $btn-font-weight;
-  line-height: $btn-line-height;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  user-select: none;
-  border: $input-btn-border-width solid transparent;
-  @include button-size($btn-padding-y, $btn-padding-x, $font-size-base, $btn-border-radius);
-  @include transition($btn-transition);
-
-  // Share hover and focus styles
-  @include hover-focus {
-    text-decoration: none;
-  }
-  &:focus,
-  &.focus {
-    outline: 0;
-    box-shadow: $btn-focus-box-shadow;
-  }
-
-  // Disabled comes first so active can properly restyle
-  &.disabled,
-  &:disabled {
-    cursor: $cursor-disabled;
-    opacity: .65;
-    @include box-shadow(none);
-  }
-
-  &:active,
-  &.active {
-    background-image: none;
-    @include box-shadow($btn-focus-box-shadow, $btn-active-box-shadow);
-  }
-  
-  /* .btn-secondary */
-  @include button-variant($btn-secondary-color, $btn-secondary-bg, $btn-secondary-border);
-  
-  /* .btn-small */
-  @include button-size($btn-padding-y-sm, $btn-padding-x-sm, $font-size-sm, $btn-border-radius-sm);
-  
-  /* additional margin */
-  margin-left: 0.15rem !important;
-  margin-right: 0.15rem !important;
-  margin-bottom: 0.15rem !important;
-}
-/* -------------------------------------------------------------------------- */
-
 .selectize-control.multi .selectize-input > div.active {
   // background: #428bca;
   // color: #ffffff;
   // border: 0 solid rgba(0, 0, 0, 0);
-  /* overriden by a bootstrap 4 btn-primary */
-  @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
+  /* overriden by a bootstrap 4 .btn-secondary */
+  @include button-variant($btn-secondary-color, $btn-secondary-bg, $btn-secondary-border);
 }
 .selectize-control.multi .selectize-input.disabled > div,
 .selectize-control.multi .selectize-input.disabled > div.active {
   // color: #808080;
   // background: #ffffff;
   // border: 0 solid rgba(77, 77, 77, 0);
-  /* overriden by a bootstrap 4 btn-primary */
-  @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
+  /* overriden by a bootstrap 4 .btn-secondary */
+  @include button-variant($btn-secondary-color, $btn-secondary-bg, $btn-secondary-border);
 }
 .selectize-input > input {
   display: inline-block !important;
@@ -295,10 +252,13 @@
   box-sizing: border-box;
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  /* respect $enable-rounded: false */
   // -webkit-border-radius: 0 0 4px 4px;
   // -moz-border-radius: 0 0 4px 4px;
   // border-radius: 0 0 4px 4px;
+  /* respect $enable-rounded: false */
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
 }
 .selectize-dropdown [data-selectable] {
   cursor: pointer;
@@ -306,10 +266,13 @@
 }
 .selectize-dropdown [data-selectable] .highlight {
   background: rgba(255, 237, 40, 0.4);
-  /* respect $enable-rounded: false */
   // -webkit-border-radius: 1px;
   // -moz-border-radius: 1px;
   // border-radius: 1px;
+  /* respect $enable-rounded: false */
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
 }
 .selectize-dropdown [data-selectable],
 .selectize-dropdown .optgroup-header {
@@ -378,19 +341,22 @@
 }
 .selectize-dropdown,
 .selectize-dropdown.form-control {
-  // height: auto;
-  // padding: 0;
-  // margin: 2px 0 0 0;
-  // z-index: 1000;
-  // background: #ffffff;
-  // border: 1px solid #cccccc;
-  // border: 1px solid rgba(0, 0, 0, 0.15);
-  // /* respect $enable-rounded: false */
-  // // -webkit-border-radius: 4px;
-  // // -moz-border-radius: 4px;
-  // // border-radius: 4px;
-  // -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-  // box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  height: auto;
+  padding: 0;
+  margin: 2px 0 0 0;
+  z-index: 1000;
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  // -webkit-border-radius: 4px;
+  // -moz-border-radius: 4px;
+  // border-radius: 4px;
+  /* respect $enable-rounded: false */
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
 }
 
 .selectize-dropdown .optgroup-header {
@@ -420,10 +386,13 @@
   min-height: 34px;
 }
 .selectize-input.dropdown-active {
-  /* respect $enable-rounded: false */
   // -webkit-border-radius: 4px;
   // -moz-border-radius: 4px;
   // border-radius: 4px;
+  /* respect $enable-rounded: false */
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
 }
 .selectize-input.dropdown-active::before {
   display: none;
@@ -454,10 +423,13 @@
   padding-right: 9px;
 }
 .selectize-control.multi .selectize-input > div {
-  /* respect $enable-rounded: false */
   // -webkit-border-radius: 3px;
   // -moz-border-radius: 3px;
   // border-radius: 3px;
+  /* respect $enable-rounded: false */
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
 }
 .form-control.selectize-control {
   padding: 0;
@@ -466,482 +438,13 @@
   background: none;
   -webkit-box-shadow: none;
   box-shadow: none;
-  /* respect $enable-rounded: false */
-  // -webkit-border-radius: 0;
-  // -moz-border-radius: 0;
-  // border-radius: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
 }
 
 
-/* https://raw.githubusercontent.com/twbs/bootstrap/v4.0.0-alpha.6/scss/_forms.scss
- * prefixed with .selectize-dropdown */
- 
-
-// scss-lint:disable QualifyingElement
-
-//
-// Textual form controls
-//
-
-.selectize-dropdown.form-control  {
-  display: block;
-  width: 100%;
-  // // Make inputs at least the height of their button counterpart (base line-height + padding + border)
-  // height: $input-height;
-  padding: $input-padding-y $input-padding-x;
-  font-size: $font-size-base;
-  line-height: $input-line-height;
-  color: $input-color;
-  background-color: $input-bg;
-  // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214.
-  background-image: none;
-  background-clip: padding-box;
-  border: $input-btn-border-width solid $input-border-color;
-
-  // Note: This has no effect on <select>s in some browsers, due to the limited stylability of `<select>`s in CSS.
-  @if $enable-rounded {
-    // Manually use the if/else instead of the mixin to account for iOS override
-    border-radius: $input-border-radius;
-  } @else {
-    // Otherwise undo the iOS default
-    border-radius: 0;
-  }
-
-  @include box-shadow($input-box-shadow);
-  @include transition($input-transition);
-
-  // Unstyle the caret on `<select>`s in IE10+.
-  &::-ms-expand {
-    background-color: transparent;
-    border: 0;
-  }
-
-  // Customize the `:focus` state to imitate native WebKit styles.
-  @include form-control-focus();
-
-  // Placeholder
-  &::placeholder {
-    color: $input-color-placeholder;
-    // Override Firefox's unusual default opacity; see https://github.com/twbs/bootstrap/pull/11526.
-    opacity: 1;
-  }
-
-  // Disabled and read-only inputs
-  //
-  // HTML5 says that controls under a fieldset > legend:first-child won't be
-  // disabled if the fieldset is disabled. Due to implementation difficulty, we
-  // don't honor that edge case; we style them as disabled anyway.
-  &:disabled,
-  &[readonly] {
-    background-color: $input-bg-disabled;
-    // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655.
-    opacity: 1;
-  }
-
-  &:disabled {
-    cursor: $cursor-disabled;
-  }
-}
-
-select.selectize-dropdown.form-control {
-  &:not([size]):not([multiple]) {
-    $select-border-width: ($border-width * 2);
-    height: calc(#{$input-height} + #{$select-border-width});
-  }
-
-  &:focus::-ms-value {
-    // Suppress the nested default white text on blue background highlight given to
-    // the selected option text when the (still closed) <select> receives focus
-    // in IE and (under certain conditions) Edge, as it looks bad and cannot be made to
-    // match the appearance of the native widget.
-    // See https://github.com/twbs/bootstrap/issues/19398.
-    color: $input-color;
-    background-color: $input-bg;
-  }
-}
-
-// Make file inputs better match text inputs by forcing them to new lines.
-.selectize-dropdown.form-control-file,
-.selectize-dropdown.form-control-range {
-  display: block;
-}
-
-
-//
-// Labels
-//
-
-// For use with horizontal and inline forms, when you need the label text to
-// align with the form controls.
-.col-form-label {
-  padding-top: calc(#{$input-padding-y} - #{$input-btn-border-width} * 2);
-  padding-bottom: calc(#{$input-padding-y} - #{$input-btn-border-width} * 2);
-  margin-bottom: 0; // Override the `<label>` default
-}
-
-.col-form-label-lg {
-  padding-top: calc(#{$input-padding-y-lg} - #{$input-btn-border-width} * 2);
-  padding-bottom: calc(#{$input-padding-y-lg} - #{$input-btn-border-width} * 2);
-  font-size: $font-size-lg;
-}
-
-.col-form-label-sm {
-  padding-top: calc(#{$input-padding-y-sm} - #{$input-btn-border-width} * 2);
-  padding-bottom: calc(#{$input-padding-y-sm} - #{$input-btn-border-width} * 2);
-  font-size: $font-size-sm;
-}
-
-
-//
-// Legends
-//
-
-// For use with horizontal and inline forms, when you need the legend text to
-// be the same size as regular labels, and to align with the form controls.
-.col-form-legend {
-  padding-top: $input-padding-y;
-  padding-bottom: $input-padding-y;
-  margin-bottom: 0;
-  font-size: $font-size-base;
-}
-
-
-// Static form control text
-//
-// Apply class to an element to make any string of text align with labels in a
-// horizontal form layout.
-
-.selectize-dropdown.form-control-static {
-  padding-top: $input-padding-y;
-  padding-bottom: $input-padding-y;
-  margin-bottom: 0; // match inputs if this class comes on inputs with default margins
-  line-height: $input-line-height;
-  border: solid transparent;
-  border-width: $input-btn-border-width 0;
-
-  &.selectize-dropdown.form-control-sm,
-  &.selectize-dropdown.form-control-lg {
-    padding-right: 0;
-    padding-left: 0;
-  }
-}
-
-
-// Form control sizing
-//
-// Build on `.selectize-dropdown.form-control` with modifier classes to decrease or increase the
-// height and font-size of form controls.
-//
-// The `.form-group-* form-control` variations are sadly duplicated to avoid the
-// issue documented in https://github.com/twbs/bootstrap/issues/15074.
-
-.selectize-dropdown.form-control-sm {
-  padding: $input-padding-y-sm $input-padding-x-sm;
-  font-size: $font-size-sm;
-  @include border-radius($input-border-radius-sm);
-}
-
-select.selectize-dropdown.form-control-sm {
-  &:not([size]):not([multiple]) {
-    height: $input-height-sm;
-  }
-}
-
-.selectize-dropdown.form-control-lg {
-  padding: $input-padding-y-lg $input-padding-x-lg;
-  font-size: $font-size-lg;
-  @include border-radius($input-border-radius-lg);
-}
-
-select.selectize-dropdown.form-control-lg {
-  &:not([size]):not([multiple]) {
-    height: $input-height-lg;
-  }
-}
-
-
-// Form groups
-//
-// Designed to help with the organization and spacing of vertical forms. For
-// horizontal forms, use the predefined grid classes.
-
-.form-group {
-  margin-bottom: $form-group-margin-bottom;
-}
-
-.form-text {
-  display: block;
-  margin-top: $form-text-margin-top;
-}
-
-
-// Checkboxes and radios
-//
-// Indent the labels to position radios/checkboxes as hanging controls.
-
-.form-check {
-  position: relative;
-  display: block;
-  margin-bottom: $form-check-margin-bottom;
-
-  &.disabled {
-    .form-check-label {
-      color: $text-muted;
-      cursor: $cursor-disabled;
-    }
-  }
-}
-
-.form-check-label {
-  padding-left: $form-check-input-gutter;
-  margin-bottom: 0; // Override default `<label>` bottom margin
-  cursor: pointer;
-}
-
-.form-check-input {
-  position: absolute;
-  margin-top: $form-check-input-margin-y;
-  margin-left: -$form-check-input-gutter;
-
-  &:only-child {
-    position: static;
-  }
-}
-
-// Radios and checkboxes on same line
-.form-check-inline {
-  display: inline-block;
-
-  .form-check-label {
-    vertical-align: middle;
-  }
-
-  + .form-check-inline {
-    margin-left: $form-check-inline-margin-x;
-  }
-}
-
-
-// Form control feedback states
-//
-// Apply contextual and semantic states to individual form controls.
-
-.selectize-dropdown.form-control-feedback {
-  margin-top: $form-feedback-margin-top;
-}
-
-.selectize-dropdown.form-control-success,
-.selectize-dropdown.form-control-warning,
-.selectize-dropdown.form-control-danger {
-  padding-right: ($input-padding-x * 3);
-  background-repeat: no-repeat;
-  background-position: center right ($input-height / 4);
-  background-size: ($input-height / 2) ($input-height / 2);
-}
-
-// Form validation states
-.has-success {
-  @include form-control-validation($brand-success);
-
-  .selectize-dropdown.form-control-success {
-    background-image: $form-icon-success;
-  }
-}
-
-.has-warning {
-  @include form-control-validation($brand-warning);
-
-  .selectize-dropdown.form-control-warning {
-    background-image: $form-icon-warning;
-  }
-}
-
-.has-danger {
-  @include form-control-validation($brand-danger);
-
-  .selectize-dropdown.form-control-danger {
-    background-image: $form-icon-danger;
-  }
-}
-
-
-// Inline forms
-//
-// Make forms appear inline(-block) by adding the `.form-inline` class. Inline
-// forms begin stacked on extra small (mobile) devices and then go inline when
-// viewports reach <768px.
-//
-// Requires wrapping inputs and labels with `.form-group` for proper display of
-// default HTML form controls and our custom form controls (e.g., input groups).
-
-.form-inline {
-  display: flex;
-  flex-flow: row wrap;
-  align-items: center; // Prevent shorter elements from growing to same height as others (e.g., small buttons growing to normal sized button height)
-
-  // Because we use flex, the initial sizing of checkboxes is collapsed and
-  // doesn't occupy the full-width (which is what we want for xs grid tier),
-  // so we force that here.
-  .form-check {
-    width: 100%;
-  }
-
-  // Kick in the inline
-  @include media-breakpoint-up(sm) {
-    label {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 0;
-    }
-
-    // Inline-block all the things for "inline"
-    .form-group {
-      display: flex;
-      flex: 0 0 auto;
-      flex-flow: row wrap;
-      align-items: center;
-      margin-bottom: 0;
-    }
-
-    // Allow folks to *not* use `.form-group`
-    .selectize-dropdown.form-control {
-      display: inline-block;
-      width: auto; // Prevent labels from stacking above inputs in `.form-group`
-      vertical-align: middle;
-    }
-
-    // Make static controls behave like regular ones
-    .selectize-dropdown.form-control-static {
-      display: inline-block;
-    }
-
-    .input-group {
-      width: auto;
-    }
-
-    .selectize-dropdown.form-control-label {
-      margin-bottom: 0;
-      vertical-align: middle;
-    }
-
-    // Remove default margin on radios/checkboxes that were used for stacking, and
-    // then undo the floating of radios and checkboxes to match.
-    .form-check {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: auto;
-      margin-top: 0;
-      margin-bottom: 0;
-    }
-    .form-check-label {
-      padding-left: 0;
-    }
-    .form-check-input {
-      position: relative;
-      margin-top: 0;
-      margin-right: $form-check-input-margin-x;
-      margin-left: 0;
-    }
-
-    // Custom form controls
-    .custom-control {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding-left: 0;
-    }
-    .custom-control-indicator {
-      position: static;
-      display: inline-block;
-      margin-right: $form-check-input-margin-x; // Flexbox alignment means we lose our HTML space here, so we compensate.
-      vertical-align: text-bottom;
-    }
-
-    // Re-override the feedback icon.
-    .has-feedback .selectize-dropdown.form-control-feedback {
-      top: 0;
-    }
-  }
-}
-
-
-/* https://raw.githubusercontent.com/twbs/bootstrap/v4.0.0-alpha.6/scss/_dropdown.scss */
-
-// .dropdown-menu {
-.selectize-dropdown.multi.form-control {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: $zindex-dropdown;
-  display: none; // none by default, but block on "open" of the menu
-  float: left;
-  min-width: $dropdown-min-width;
-  padding: $dropdown-padding-y 0;
-  margin: $dropdown-margin-top 0 0; // override default ul
-  font-size: $font-size-base; // Redeclare because nesting can cause inheritance issues
-  color: $body-color;
-  text-align: left; // Ensures proper alignment if parent has it changed (e.g., modal footer)
-  list-style: none;
-  background-color: $dropdown-bg;
-  background-clip: padding-box;
-  border: $dropdown-border-width solid $dropdown-border-color;
-  @include border-radius($border-radius);
-  @include box-shadow($dropdown-box-shadow);
-}
-
-.selectize-dropdown-content {
-  margin: 0;
-  pading: 0;
-  border: 0;
-}
-
-// .dropdown-item {
-.selectize-dropdown-content .option {
-  display: block;
-  width: 100%; // For `<button>`s
-  padding: 3px $dropdown-item-padding-x;
-  clear: both;
-  font-weight: $font-weight-normal;
-  color: $dropdown-link-color;
-  text-align: inherit; // For `<button>`s
-  white-space: nowrap; // prevent links from randomly breaking onto new lines
-  background: none; // For `<button>`s
-  border: 0; // For `<button>`s
-
-  @include hover-focus {
-    color: $dropdown-link-hover-color;
-    text-decoration: none;
-    background-color: $dropdown-link-hover-bg;
-  }
-
-  &.active,
-  &:active {
-    color: $dropdown-link-active-color;
-    text-decoration: none;
-    background-color: $dropdown-link-active-bg;
-  }
-
-  &.disabled,
-  &:disabled {
-    color: $dropdown-link-disabled-color;
-    cursor: $cursor-disabled;
-    background-color: transparent;
-    // Remove CSS gradients if they're enabled
-    @if $enable-gradients {
-      background-image: none;
-    }
-  }
-}
-
-.selectize-dropdown-content {
-  overflow-y: hidden;
-}
-
-/* -------------------------------------------------------------------------- */
-
-/* fix input */
+/* fix input with https://raw.githubusercontent.com/twbs/bootstrap/v4.0.0-alpha.6/scss/_forms.scss */
 .selectize-input > input {
   font-size: $font-size-base;
   color: $input-color;

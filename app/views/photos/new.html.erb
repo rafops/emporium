@@ -13,7 +13,12 @@
     <form id="photos-form" action="#">
       <div class="form-group">
         <label for="event-input"><%= t('events.input.title') %></label>
-        <input type="text" class="form-control" id="event-input" aria-describedby="eventHelp" placeholder="<%= t('events.input.placeholder') %>">
+        <!-- <input type="text" class="form-control" id="event-input" aria-describedby="eventHelp" placeholder="<%= t('events.input.placeholder') %>"> -->
+        <select id="event-input" aria-describedby="eventHelp" placeholder="<%= t('events.input.placeholder') %>">
+          <option></option>
+          <option>foo</option>
+          <option>bar</option>
+        </select>
         <small id="eventHelp" class="form-text text-muted"><%= t('events.input.help') %></small>
       </div>
       <div class="form-group">
