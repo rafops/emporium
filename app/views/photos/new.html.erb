@@ -10,6 +10,23 @@
 
 <div class="row">
   <div class="col">
+    <form id="photos-form" action="#">
+      <div class="form-group">
+        <label for="event-input"><%= t('events.input.title') %></label>
+        <input type="text" class="form-control" id="event-input" aria-describedby="eventHelp" placeholder="<%= t('events.input.placeholder') %>">
+        <small id="eventHelp" class="form-text text-muted"><%= t('events.input.help') %></small>
+      </div>
+      <div class="form-group">
+        <label for="photographer-input"><%= t('photographers.input.title') %></label>
+        <input type="text" class="form-control" id="photographer-input" aria-describedby="photographerHelp" placeholder="<%= t('photographers.input.placeholder') %>">
+        <small id="photographerHelp" class="form-text text-muted"><%= t('photographers.input.help') %></small>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
     <%= render partial: 'uploader' %>
   </div>
 </div>

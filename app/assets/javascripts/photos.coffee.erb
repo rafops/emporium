@@ -16,6 +16,7 @@
       console.log('initialized') if <%= Rails.env.development? %>
 
     initializeForm: ->
+      @initializeEventInput()
       @initializeUploader(document.getElementById('upload-button'))
 
     ###
@@ -24,6 +25,13 @@
 
     new: ->
       @initializeForm()
+
+    initializeEventInput: ->
+      @$eventInput = $('#event-input')
+      @$eventInput.selectize(
+        createOnBlur: true,
+        create: true
+      )
 
   $.extend(app.photos, app._uploader)
   app.photos

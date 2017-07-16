@@ -74,6 +74,17 @@ en:
       sign_in_with_provider: "Sign in with %{provider}"
   photos:
     title: "Photos"
+  photographers:
+    input:
+      title: "Photographer"
+      placeholder: "Enter or select a photographer"
+      help: "A photographer will receive the credits for uploaded photos."
+  events:
+    title: "Events"
+    input:
+      title: "Event"
+      placeholder: "Enter or select an event"
+      help: "An event group photos in a single thread."
   uploader:
     storage_service_is_not_available: "Storage service is not available"
     click_the_button_bellow_to_select_files: "Click the button bellow to select files"
