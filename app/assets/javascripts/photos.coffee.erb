@@ -31,11 +31,17 @@
       @$eventInput.selectize(
         create: true,
         sortField: 'text'
+        render:
+          option_create: (data, escape) ->
+            '<div class="create"><i class="fa fa-plus" aria-hidden="true"></i> <strong>' + escape(data.input) + '</strong>&hellip;</div>'
       )
       @$photographerInput = $('#photographer-input')
       @$photographerInput.selectize(
         create: true,
         sortField: 'text'
+        render:
+          option_create: (data, escape) ->
+            '<div class="create"><i class="fa fa-plus" aria-hidden="true"></i> <strong>' + escape(data.input) + '</strong>&hellip;</div>'
       )
 
 
