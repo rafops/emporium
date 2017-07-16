@@ -58,7 +58,7 @@
 
   $.fn.setupThumbnail = (uploader) ->
     $thumbnail = @getThumbnail()
-    $thumbnail.load (=>
+    $thumbnail.on 'load', (=>
       # only display originals
       # workaround to fix scaling.hideScaled = true
       @show() if uploader.getParentId(@getUploadId()) == null
