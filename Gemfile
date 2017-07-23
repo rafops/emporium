@@ -61,6 +61,7 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 source 'https://rails-assets.org' do
+  gem 'rails-assets-lodash', '~> 4.17.0'
   gem 'rails-assets-tether', '~> 1.4.0'
   gem 'rails-assets-fine-uploader', '~> 5.13.0'
   gem 'rails-assets-pica', '~> 3.0.0'
@@ -87,3 +88,6 @@ gem 'devise', '4.3.0'
 # https://github.com/wildbit/postmark-rails
 # https://postmarkapp.com
 gem 'postmark-rails', '~> 0.15.0'
+
+# https://github.com/rails-api/active_model_serializers/tree/0-10-stable
+gem 'active_model_serializers', '~> 0.10.0'

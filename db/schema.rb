@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170716012006) do
+ActiveRecord::Schema.define(version: 20170723194338) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20170716012006) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "uuid", null: false
+    t.index "lower((title)::text)", name: "index_events_on_LOWER_title", unique: true
   end
 
   create_table "photos", id: :serial, force: :cascade do |t|
