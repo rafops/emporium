@@ -112,6 +112,7 @@
           .setTitle(filename)
           .setupRemoveButton(@uploader)
           .setupThumbnail(@uploader)
+        @uploader.setParams(@requestParams(), uploadId)
       return true
 
     uploadProgress: (uploadId, percentage) ->
@@ -158,7 +159,8 @@
       return true
 
     # https://blog.fineuploader.com/2013/08/16/fine-uploader-s3-upload-directly-to-amazon-s3-from-your-browser/#client-side-integration
-    initializeUploader: (uploadButton) ->
+    initializeUploader: (uploadButton, requestParams) ->
+      @requestParams = requestParams
       @uploader = new qq.s3.FineUploaderBasic
         debug: <%= Rails.env.development? %>
         button: uploadButton

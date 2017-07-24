@@ -17,7 +17,7 @@
 
     initializeForm: ->
       @initializeEventInput()
-      @initializeUploader(document.getElementById('upload-button'))
+      @initializeUploader(document.getElementById('upload-button'), @uploaderRequestParams)
 
     ###
     Actions
@@ -71,10 +71,6 @@
               ))
       )
 
-      @$eventInput.on('change', (e) ->
-        console.log(e.target.value)
-      )
-
       @$photographerInput = $('#photographer')
       @$photographerInput.selectize(
         create: true
@@ -85,6 +81,10 @@
             '<div class="create"><i class="fa fa-plus" aria-hidden="true"></i> <strong>' + escape(data.input) + '</strong>&hellip;</div>'
       )
 
+    uploaderRequestParams: ->
+      requestParams = {}
+      requestParams['event_uuid'] = @$eventInput.val() if @$eventInput and @$eventInput.val() != ""
+      requestParams
 
   $.extend(app.photos, app._uploader)
   app.photos

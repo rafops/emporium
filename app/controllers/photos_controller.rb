@@ -47,7 +47,7 @@ class PhotosController < ApplicationController
   private
 
     def photo_params
-      original = params.permit(:key, :qquuid, :qqparentuuid, :name)
+      original = params.permit(:key, :qquuid, :qqparentuuid, :name, :event_uuid)
       object_key = original.delete(:key)
       uuid = original.delete(:qquuid)
       parent_uuid = original.delete(:qqparentuuid)
