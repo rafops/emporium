@@ -48,6 +48,10 @@
               this.setValue(result['uuid'])
               ## does not work as expected
               # callback({ value: result['uuid'], text: result['title'] })
+              ## remove unused options from previous load()
+              _.forEach(this.options, (option) =>
+                this.removeOption(option['value']) if result['uuid'] != option['value']
+              )
         sortField: 'text'
         render:
           option_create: (data, escape) ->

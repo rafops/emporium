@@ -9,7 +9,7 @@ class ListEvents
     events = title.blank? ? Event.all : Event.where_title_like(title)
 
     if events.any?
-      publish :success, events.limit(10)
+      publish :success, events
     else
       publish :not_found
     end
