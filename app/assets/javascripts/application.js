@@ -11,10 +11,11 @@
 // about supported directives.
 //
 //= require jquery
+//= require lodash
 //= require tether
 //= require bootstrap
 //= require jquery_ujs
-//= require turbolinks
 //= require fine-uploader/s3.fine-uploader.core
 //= require pica/pica
+//= require selectize/standalone/selectize
 //= require_tree .

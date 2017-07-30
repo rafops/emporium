@@ -16,7 +16,8 @@
       console.log('initialized') if <%= Rails.env.development? %>
 
     initializeForm: ->
-      @initializeUploader(document.getElementById('upload-button'))
+      @initializeEventInput()
+      @initializeUploader(document.getElementById('upload-button'), @uploaderRequestParams)
 
     ###
     Actions
@@ -24,6 +25,66 @@
 
     new: ->
       @initializeForm()
+
+    initializeEventInput: ->
+      @$eventInput = $('#event')
+      eventSelectize = @$eventInput.selectize(
+        persist: false
+        create: (title, callback) ->
+          if !title.length
+            return callback()
+          $.ajax
+            url: '/events'
+            type: 'POST'
+            context: @
+            data:
+              title: title
+            error: ->
+              callback()
+            success: (result) ->
+              this.addOption({ value: result['uuid'], text: result['title'] })
+              ## do not show options
+              # this.refreshOptions(true)
+              this.setValue(result['uuid'])
+              ## does not work as expected
+              # callback({ value: result['uuid'], text: result['title'] })
+              ## remove unused options from previous load()
+              _.forEach(this.options, (option) =>
+                this.removeOption(option['value']) if result['uuid'] != option['value']
+              )
+        sortField: 'text'
+        render:
+          option_create: (data, escape) ->
+            '<div class="create"><i class="fa fa-plus" aria-hidden="true"></i> <strong>' + escape(data.input) + '</strong>&hellip;</div>'
+
+        load: (title, callback) ->
+          if !title.length
+            return callback()
+          $.ajax
+            url: '/events?title=' + encodeURIComponent(title)
+            type: 'GET'
+            error: ->
+              callback()
+            success: (res) ->
+              callback(_.map(res, (item) ->
+                { value: item['uuid'], text: item['title'] }
+              ))
+      )
+
+      @$photographerInput = $('#photographer')
+      @$photographerInput.selectize(
+        create: true
+        persist: false
+        sortField: 'text'
+        render:
+          option_create: (data, escape) ->
+            '<div class="create"><i class="fa fa-plus" aria-hidden="true"></i> <strong>' + escape(data.input) + '</strong>&hellip;</div>'
+      )
+
+    uploaderRequestParams: ->
+      requestParams = {}
+      requestParams['event_uuid'] = @$eventInput.val() if @$eventInput and @$eventInput.val() != ""
+      requestParams
 
   $.extend(app.photos, app._uploader)
   app.photos

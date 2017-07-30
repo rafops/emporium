@@ -5,6 +5,7 @@ class Photo < ApplicationRecord
   enum size: { thumbnail: 400, preview: 1200 }
   before_save :set_size_from_name
   belongs_to :original, class_name: self.name, primary_key: :uuid, foreign_key: :parent_uuid
+  belongs_to :event
   has_many :copies, class_name: self.name, primary_key: :uuid, foreign_key: :parent_uuid
   scope :original, -> { where(size: nil) }
 
