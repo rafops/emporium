@@ -22,7 +22,13 @@ Rails.application.routes.draw do
     root 'photos#new'
   end
 
-  resources :events, only: [:index, :create], defaults: { format: :json }
+  resources :events, only: [:index, :create], defaults: { format: :json } do
+    collection do
+      scope '/' do
+        get '/:uuid' => 'events#show', as: :show, defaults: { format: :html }
+      end
+    end
+  end
 
   root 'home#index'
 

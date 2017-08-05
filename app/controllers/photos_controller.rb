@@ -58,6 +58,10 @@ class PhotosController < ApplicationController
       )
     end
 
+    def new_photo
+      @new_photo ||= NewPhoto.new
+    end
+
     def create_photo
       @create_photo ||= CreatePhoto.new(photo_params.to_h.symbolize_keys)
     end

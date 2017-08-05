@@ -73,7 +73,8 @@ en:
       didnt_receive_unlock_instruction: "Didn't receive unlock instructions?"
       sign_in_with_provider: "Sign in with %{provider}"
   photos:
-    title: "Photos"
+    title: "Photo Upload"
+    finish_button: "Finish"
   photographers:
     input:
       title: "Photographer"

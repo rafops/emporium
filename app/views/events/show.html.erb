@@ -1,0 +1,11 @@
+<div class="row">
+  <% thumbnails.each do |thumbnail| %>
+    <div class="col-sm-6 col-md-4 p-2">
+      <div class="card home-card" style="background-image: url('<%= PhotoService.url(thumbnail) %>');">
+        <div class="card-block">
+          <p class="card-text"><small class="text-muted"><%= thumbnail.original.name %></small></p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

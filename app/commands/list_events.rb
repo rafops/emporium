@@ -6,7 +6,9 @@ class ListEvents
   end
 
   def call
-    events = title.blank? ? Event.all : Event.where_title_like(title)
+    events = Event.order(created_at: :desc)
+    events = events.where_title_like(title) unless title.blank?
+    events = events.limit(50)
 
     if events.any?
       publish :success, events

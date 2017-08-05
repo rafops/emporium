@@ -7,6 +7,7 @@ class Photo < ApplicationRecord
   belongs_to :original, class_name: self.name, primary_key: :uuid, foreign_key: :parent_uuid
   belongs_to :event
   has_many :copies, class_name: self.name, primary_key: :uuid, foreign_key: :parent_uuid
+  has_many :thumbnails, -> { thumbnail }, class_name: self.name, primary_key: :uuid, foreign_key: :parent_uuid
   scope :original, -> { where(size: nil) }
 
   private
