@@ -1,6 +1,6 @@
 class Event < ApplicationRecord
 
-  has_many :photos, dependent: :delete_all
+  has_many :photos, -> { original }, dependent: :delete_all
   before_save :set_uuid
   scope :where_title_like, -> (title) { where('LOWER(title) LIKE ?', "%#{title.downcase}%") }
   scope :entitled, -> (title) { where('LOWER(title) = ?', title.downcase) }

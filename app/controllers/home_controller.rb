@@ -1,24 +1,24 @@
 class HomeController < ApplicationController
   def index
-    list_photos.on :success do |thumbnails|
+    list_events_home.on :success do |events|
       respond_to do |format|
-        format.html { render :index, locals: { thumbnails: thumbnails } }
+        format.html { render :index, locals: { events: events } }
       end
     end
 
-    list_photos.on :not_found do
+    list_events_home.on :not_found do
       respond_to do |format|
-        format.html { render :index, locals: { thumbnails: [] } }
+        format.html { render :index, locals: { events: [] } }
       end
     end
 
-    list_photos.call
+    list_events_home.call
   end
 
   private
 
-    def list_photos
-      @list_photos ||= ListPhotos.new
+    def list_events_home
+      @list_events_home ||= ListEventsHome.new
     end
 
 end
