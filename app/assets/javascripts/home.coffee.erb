@@ -1,0 +1,30 @@
+(($) ->
+
+  ###
+  Application
+  ###
+
+  app = undefined
+  app = window.Emporium or (window.Emporium = {})
+  app.home =
+
+    ###
+    Initializers
+    ###
+
+    initialize: ->
+      console.log('home initialized') if <%= Rails.env.development? %>
+
+    ###
+    Actions
+    ###
+
+    index: ->
+      @initializeEventClick()
+
+    initializeEventClick: ->
+      $('#event-list').on 'click', '[data-event-uuid]', ->
+        window.document.location = '/events/' + $(this).data('event-uuid')
+
+  app.home
+) jQuery

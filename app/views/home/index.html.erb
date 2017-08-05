@@ -1,7 +1,7 @@
-<div class="row">
+<div class="row" id="event-list">
   <% events.each do |event| %>
     <div class="col-sm-6 col-md-4 p-2">
-      <div class="card home-card" style="background-image: url('<%= PhotoService.url(event.photos.first.thumbnails.first) %>');">
+      <div class="card home-card" style="background-image: url('<%= PhotoService.url(event.photos.first.thumbnails.first) %>');" data-event-uuid="<%= event.uuid %>">
         <div class="card-block">
           <p class="card-text"><small class="text-muted"><%= event.title %></small></p>
         </div>
