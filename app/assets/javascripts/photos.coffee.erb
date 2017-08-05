@@ -47,7 +47,6 @@
       requestParams['event_uuid'] = @$eventSelect.val() if @$eventSelect and @$eventSelect.val() != ""
       requestParams
 
-  $.extend(app.photos, app._uploader)
-  $.extend(app.photos, app._datalist)
+  $.extend(app.photos, app._uploader, app._datalist)
   app.photos
 ) jQuery
