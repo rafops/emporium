@@ -8,7 +8,7 @@ class HomeController < ApplicationController
 
     list_photos.on :not_found do
       respond_to do |format|
-        format.json { render :index, locals: { thumbnails: [] } }
+        format.html { render :index, locals: { thumbnails: [] } }
       end
     end
 

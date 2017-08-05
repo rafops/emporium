@@ -4,6 +4,13 @@ class PhotosController < ApplicationController
   # protect_from_forgery prepend: false
 
   def new
+    new_photo.on :success do |events|
+      respond_to do |format|
+        format.html { render :new, locals: { events: events } }
+      end
+    end
+
+    new_photo.call
   end
 
   def create
@@ -56,6 +63,10 @@ class PhotosController < ApplicationController
         uuid: uuid,
         parent_uuid: parent_uuid
       )
+    end
+
+    def new_photo
+      @new_photo ||= NewPhoto.new
     end
 
     def create_photo

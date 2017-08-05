@@ -27,8 +27,8 @@
       @initializeForm()
 
     initializeEventInput: ->
-      @$eventInput = $('#event')
-      eventSelectize = @$eventInput.selectize(
+      @$eventSelect = $('#event')
+      eventSelectize = @$eventSelect.selectize(
         persist: false
         create: (title, callback) ->
           if !title.length
@@ -52,7 +52,6 @@
               _.forEach(this.options, (option) =>
                 this.removeOption(option['value']) if result['uuid'] != option['value']
               )
-        sortField: 'text'
         render:
           option_create: (data, escape) ->
             '<div class="create"><i class="fa fa-plus" aria-hidden="true"></i> <strong>' + escape(data.input) + '</strong>&hellip;</div>'
@@ -83,7 +82,7 @@
 
     uploaderRequestParams: ->
       requestParams = {}
-      requestParams['event_uuid'] = @$eventInput.val() if @$eventInput and @$eventInput.val() != ""
+      requestParams['event_uuid'] = @$eventSelect.val() if @$eventSelect and @$eventSelect.val() != ""
       requestParams
 
   $.extend(app.photos, app._uploader)

@@ -14,7 +14,9 @@
 
       <div class="form-group">
         <label for="event"><%= t('events.input.title') %></label>
-        <select id="event" aria-describedby="eventHelp" placeholder="<%= t('events.input.placeholder') %>"></select>
+        <select id="event" aria-describedby="eventHelp" placeholder="<%= t('events.input.placeholder') %>">
+          <%= options_from_collection_for_select(events, :uuid, :title) %>
+        </select>
         <small id="eventHelp" class="form-text text-muted"><%= t('events.input.help') %></small>
       </div>
 
