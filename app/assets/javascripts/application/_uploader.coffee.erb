@@ -89,37 +89,37 @@
     Uploader
     ###
 
-    findItem: (uploadId) ->
-      @items ||= {}
-      $item = @items[uploadId] || $("#upload_item_#{uploadId}")
-      @items[uploadId] ||= $item if $item.length > 0
+    uploader_findItem: (uploadId) ->
+      @uploader_items ||= {}
+      $item = @uploader_items[uploadId] || $("#upload_item_#{uploadId}")
+      @uploader_items[uploadId] ||= $item if $item.length > 0
       return $item
 
-    createItem: (uploadId, name) ->
-      @itemTemplate ||= $('#upload-item-template').html()
-      @$itemContainer ||= $('#upload-items')
-      @$itemContainer.append(@itemTemplate.replace(/{{uploadId}}/g, uploadId))
-      return @findItem(uploadId)
+    uploader_createItem: (uploadId, name) ->
+      @uploader_itemTemplate ||= $('#upload-item-template').html()
+      @$uploader_itemContainer ||= $('#upload-items')
+      @$uploader_itemContainer.append(@uploader_itemTemplate.replace(/{{uploadId}}/g, uploadId))
+      return @uploader_findItem(uploadId)
 
-    uploadStart: (uploadId, filename) ->
-      $item = @findItem(uploadId)
+    uploader_uploadStart: (uploadId, filename) ->
+      $item = @uploader_findItem(uploadId)
       # retry
       if $item.length > 0
         $item.getProgressBar().removeDanger()
       # new upload
       else
-        $item = @createItem(uploadId)
+        $item = @uploader_createItem(uploadId)
           .setTitle(filename)
           .setupRemoveButton(@uploader)
           .setupThumbnail(@uploader)
-        @uploader.setParams(@requestParams(), uploadId)
+        @uploader.setParams(@uploader_requestParams(), uploadId)
       return true
 
-    uploadProgress: (uploadId, percentage) ->
-      $item = @findItem(uploadId)
+    uploader_uploadProgress: (uploadId, percentage) ->
+      $item = @uploader_findItem(uploadId)
       $item.setProgress(percentage)
 
-    thumbnailsUploadComplete: (uploadId) ->
+    uploader_thumbnailsUploadComplete: (uploadId) ->
       thumbnails = @uploader.getUploads().filter((item) ->
         item.parentId == uploadId
       )
@@ -128,42 +128,42 @@
       )
       return thumbnails.length == uploadedThumbnails.length
 
-    uploadComplete: (uploadId) ->
+    uploader_uploadComplete: (uploadId) ->
       upload = @uploader.getUploads(id: uploadId)
       upload = @uploader.getUploads(id: upload.parentId) if upload.parentId
-      if upload.status == qq.status.UPLOAD_SUCCESSFUL and @thumbnailsUploadComplete(upload.id)
-        $item = @findItem(upload.id)
+      if upload.status == qq.status.UPLOAD_SUCCESSFUL and @uploader_thumbnailsUploadComplete(upload.id)
+        $item = @uploader_findItem(upload.id)
         $item.markAsComplete()
       # retry all on the queue if a upload was completed successfully
-      @retryAll()
+      @uploader_retryAll()
       return true
 
-    uploadError: (uploadId) ->
-      $item = @findItem(uploadId)
+    uploader_uploadError: (uploadId) ->
+      $item = @uploader_findItem(uploadId)
       $item.getProgressBar().addDanger()
       return true
 
-    uploadCancelOrDelete: (uploadId) ->
+    uploader_uploadCancelOrDelete: (uploadId) ->
       upload = @uploader.getUploads(id: uploadId)
       if upload.status == qq.status.UPLOADING or
          upload.status == qq.status.CANCELED
-        $item = @findItem(uploadId)
+        $item = @uploader_findItem(uploadId)
         $item.hide() if $item.is(':visible')
       return true
 
-    uploadDeleteComplete: (uploadId) ->
+    uploader_uploadDeleteComplete: (uploadId) ->
       upload = @uploader.getUploads(id: uploadId)
       if upload.status == qq.status.DELETED
-        $item = @findItem(uploadId)
+        $item = @uploader_findItem(uploadId)
         $item.hide() if $item.is(':visible')
       return true
 
     # https://blog.fineuploader.com/2013/08/16/fine-uploader-s3-upload-directly-to-amazon-s3-from-your-browser/#client-side-integration
-    initializeUploader: (uploadButton, requestParams) ->
-      @requestParams = requestParams
+    uploader: (_config) ->
+      @uploader_requestParams = _config.requestParams
       @uploader = new qq.s3.FineUploaderBasic
         debug: <%= Rails.env.development? %>
-        button: uploadButton
+        button: _config.uploadButton
         request:
           endpoint: "<%= StorageService.endpoint %>"
           accessKey: "<%= StorageService.access_key_id %>"
@@ -222,55 +222,55 @@
           # hideScaled: true
         callbacks:
           onProgress: (uploadId, name, uploadedBytes, totalBytes) =>
-            @uploadProgress(uploadId, uploadedBytes/totalBytes*100)
+            @uploader_uploadProgress(uploadId, uploadedBytes/totalBytes*100)
           onUpload: (uploadId, name) =>
-            @uploadStart(uploadId, name)
+            @uploader_uploadStart(uploadId, name)
           onComplete: (uploadId, name, responseJSON, xhr) =>
             if responseJSON['success']
-              @uploadComplete(uploadId)
+              @uploader_uploadComplete(uploadId)
             else
-              @uploadError(uploadId)
+              @uploader_uploadError(uploadId)
           onError: (uploadId, name, errorReason, xhr) =>
-            @uploadError(uploadId)
+            @uploader_uploadError(uploadId)
           onCancel: (uploadId) =>
-            @uploadCancelOrDelete(uploadId)
+            @uploader_uploadCancelOrDelete(uploadId)
           onDelete: (uploadId) =>
-            @uploadCancelOrDelete(uploadId)
+            @uploader_uploadCancelOrDelete(uploadId)
           onDeleteComplete: (uploadId, xhr, isError) =>
-            @uploadDeleteComplete(uploadId)
+            @uploader_uploadDeleteComplete(uploadId)
           onError: (uploadId, name, errorReason, xhr) =>
-            @uploadError(uploadId)
+            @uploader_uploadError(uploadId)
           onStatusChange: (uploadId, oldStatus, newStatus) =>
             if newStatus == qq.status.UPLOAD_FAILED
-              @addToRetryQueue(uploadId)
+              @uploader_addToRetryQueue(uploadId)
 
-      @initializeRetryQueue()
+      @uploader_initializeRetryQueue()
 
     ###
     Retry Queue
     ###
 
-    addToRetryQueue: (uploadId) ->
-      @retryQueue.push(uploadId)
+    uploader_addToRetryQueue: (uploadId) ->
+      @uploader_retryQueue.push(uploadId)
 
-    retryUpload: ->
-      uploadId = @retryQueue.shift()
+    uploader_retryUpload: ->
+      uploadId = @uploader_retryQueue.shift()
       @uploader.retry(uploadId) unless uploadId == undefined
       setTimeout (=>
-        @monitorRetryQueue()
+        @uploader_monitorRetryQueue()
       ), 5000
 
-    monitorRetryQueue: ->
+    uploader_monitorRetryQueue: ->
       setTimeout (=>
-        @retryUpload()
+        @uploader_retryUpload()
       ), 5000
 
-    retryAll: ->
-      @uploader.retry(@retryQueue.shift()) while @retryQueue.length > 0
+    uploader_retryAll: ->
+      @uploader.retry(@uploader_retryQueue.shift()) while @uploader_retryQueue.length > 0
 
-    initializeRetryQueue: ->
-      @retryQueue = []
-      @monitorRetryQueue()
+    uploader_initializeRetryQueue: ->
+      @uploader_retryQueue = []
+      @uploader_monitorRetryQueue()
 
   app._uploader
 ) jQuery

@@ -14,9 +14,7 @@
 
       <div class="form-group">
         <label for="event"><%= t('events.input.title') %></label>
-        <select id="event" aria-describedby="eventHelp" placeholder="<%= t('events.input.placeholder') %>">
-          <%= options_from_collection_for_select(events, :uuid, :title) %>
-        </select>
+        <select id="event" aria-describedby="eventHelp" placeholder="<%= t('events.input.placeholder') %>"></select>
         <small id="eventHelp" class="form-text text-muted"><%= t('events.input.help') %></small>
       </div>
 
@@ -32,6 +30,6 @@
 
 <div class="row">
   <div class="col">
-  <button type="button" id="finish-upload" class="btn btn-success btn-lg float-right">Finish</button>
+    <button type="button" id="photos-save" class="btn btn-secondary btn-lg float-right"><%= t('photos.save') %></button>
   </div>
 </div>

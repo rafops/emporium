@@ -74,6 +74,7 @@ en:
       sign_in_with_provider: "Sign in with %{provider}"
   photos:
     title: "Photos"
+    save: "Save"
   photographers:
     input:
       title: "Photographer"
