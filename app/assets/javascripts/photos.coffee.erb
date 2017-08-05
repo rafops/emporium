@@ -24,6 +24,8 @@
     ###
 
     new: ->
+      $('#finish-upload').on 'click', ->
+        window.location.replace('/')
       @initializeForm()
 
     initializeEventInput: ->
