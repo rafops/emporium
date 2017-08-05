@@ -13,8 +13,9 @@
     ###
     
     datalist: (_config) ->
-      @$selectElement = $("##{_config.id}")
-      eventSelectize = @$selectElement.selectize(
+      @datalist_selectElements ||= {}
+      @datalist_selectElements[_config.id] = $("##{_config.id}")
+      eventSelectize = @datalist_selectElements[_config.id].selectize(
         persist: false
         create: (label, callback) ->
           if !label.length

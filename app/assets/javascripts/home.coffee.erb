@@ -24,7 +24,7 @@
 
     initializeEventClick: ->
       $('#event-list').on 'click', '[data-event-uuid]', ->
-        window.document.location = '/events/' + $(this).data('event-uuid')
+        window.location = '/events/' + $(this).data('event-uuid')
 
   app.home
 ) jQuery

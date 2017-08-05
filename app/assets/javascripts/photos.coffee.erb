@@ -19,14 +19,18 @@
       @initializeEventDatalist()
       @initializeUploader()
 
+    initializeFinishButton: ->
+      $('#finish-button').on 'click', =>
+        window.location.replace('/events/' + @$eventSelect.val())
+
+
     ###
     Actions
     ###
 
     new: ->
-      $('#finish-upload').on 'click', ->
-        window.location.replace('/')
       @initializeForm()
+      @initializeFinishButton()
 
     initializeEventDatalist: ->
       @datalist(
@@ -35,6 +39,7 @@
         labelKey: 'title'
         valueKey: 'uuid'
       )
+      @$eventSelect = $('#event')
 
     initializeUploader: ->
       @uploader(
