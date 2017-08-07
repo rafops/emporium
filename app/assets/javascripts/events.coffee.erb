@@ -1,0 +1,31 @@
+(($) ->
+
+  ###
+  Application
+  ###
+
+  app = undefined
+  app = window.Emporium or (window.Emporium = {})
+  app.events =
+
+    ###
+    Initializers
+    ###
+
+    initialize: ->
+      console.log('events initialized') if <%= Rails.env.development? %>
+
+    ###
+    Actions
+    ###
+
+    show: ->
+      @initializeLightbox()
+
+    initializeLightbox: ->
+      $('#thumbnail-list [data-mfp-src]').magnificPopup(
+        type: 'image'
+      )
+
+  app.events
+) jQuery

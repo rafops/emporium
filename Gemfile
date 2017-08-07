@@ -66,6 +66,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-fine-uploader', '~> 5.13.0'
   gem 'rails-assets-pica', '~> 3.0.0'
   gem 'rails-assets-selectize', '~> 0.12.0'
+  gem 'rails-assets-magnific-popup', '~> 1.1.0'
 end
 
 # Bootstrap 4
