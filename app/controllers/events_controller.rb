@@ -33,16 +33,16 @@ class EventsController < ApplicationController
     create_event.call
   end
 
-  def show    
+  def show
     list_thumbnails.on :success do |thumbnails|
       respond_to do |format|
-        format.html { render :show, locals: { thumbnails: thumbnails } }
+        format.html { render :show, locals: { event: event, thumbnails: thumbnails } }
       end
     end
 
     list_thumbnails.on :not_found do
       respond_to do |format|
-        format.html { render :show, locals: { thumbnails: [] } }
+        format.html { render :show, locals: { event: event, thumbnails: [] } }
       end
     end
 
@@ -63,8 +63,12 @@ class EventsController < ApplicationController
       @create_event ||= CreateEvent.new(event_params.to_h.symbolize_keys)
     end
 
+    def event
+      @event ||= Event.find_by_uuid(params[:uuid])
+    end
+
     def list_thumbnails
-      @list_thumbnails ||= ListThumbnails.new(event: Event.find_by_uuid(params[:uuid]))
+      @list_thumbnails ||= ListThumbnails.new(event: event)
     end
 
 end

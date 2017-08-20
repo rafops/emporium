@@ -18,4 +18,5 @@
 //= require fine-uploader/s3.fine-uploader.core
 //= require pica/pica
 //= require selectize/standalone/selectize
+//= require magnific-popup/jquery.magnific-popup
 //= require_tree .
